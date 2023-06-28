@@ -8864,7 +8864,7 @@ style-loader@^3.3.1:
 
 styled-components@^6.0.0-rc.6:
   version "6.0.0-rc.6"
-  resolved "https://registry.npmjs.org/styled-components/-/styled-components-6.0.0-rc.6.tgz"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-6.0.0-rc.6.tgz#5a29f73e87ea634322918bbae024baa4b57ea4cc"
   integrity sha512-A+LmomjXH1TZp5WZIvC1KiWyYJB+DgUzv4qMvoj8WSFdteZdosAbPIihlrSjcaITzqFHxG6MBq4kZhHeI8EkEA==
   dependencies:
     "@babel/cli" "^7.21.0"
