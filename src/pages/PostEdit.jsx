@@ -1,53 +1,50 @@
-import { collection, getDocs, query } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { db } from '../firebase';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 const PostEdit = () => {
-  const [post, setPost] = useState([{ title: '', content: '', tags: [''] }]);
+  const [post, setPost] = useState({ title: '', content: '', tags: ',' });
+  const param = useParams()
+
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, 'test01'));
-      const querySnapshot = await getDocs(q);
-      const testPost = [];
-      querySnapshot.forEach((doc) => {
-        const data = {
-          id: doc.id,
-          ...doc.data()
-        };
-        testPost.push(data);
-      });
-      setPost(testPost);
-      setTestContents(testPost[0].content);
+      const doc1 = doc(db, 'posts', param.pid)
+      const docData = await getDoc(doc1)
+
+      setPost(docData.data());
+      setTestContents(docData.data().content);
     };
     fetchData();
   }, []);
 
   const navigate = useNavigate();
-  const id = 1;
+
   const [testContents, setTestContents] = useState('');
   const onChangeContents = (contents) => {
     setTestContents(contents);
   };
-  console.log(testContents);
-  const ref = useRef(null);
+
+  const titleRef = useRef(null);
+  const tagsRef = useRef(null);
+  
   useEffect(() => {
-    ref.current.focus();
+    console.log(titleRef.current.innerHTML)
+    titleRef.current.focus();
   }, []);
-  // useEffect(() => {
-  //   return localStorage.setItem('test', JSON.stringify(testContents));
-  // }, [testContents]);
-  const fetchContents = JSON.parse(localStorage.getItem('test'));
+
+  const updatePost = () => {
+    alert('저장완료!')
+
+  }
   return (
     <>
       <StEditDiv>
         <StBtn
-          onClick={() => {
-            alert('저장완료');
-          }}
+          onClick={updatePost}
         >
           완료
         </StBtn>
@@ -55,7 +52,7 @@ const PostEdit = () => {
           onClick={() => {
             const check = window.confirm('아직 작성이 완료되지 않았습니다. 정말로 돌아가시겠습니까?');
             if (check) {
-              navigate(`/posts/${id}`);
+              navigate(`/posts/${param.pid}`);
             }
           }}
         >
@@ -64,19 +61,14 @@ const PostEdit = () => {
       </StEditDiv>
       <StInputDiv>
         <StObject>제목</StObject>
-        <StContentArea contentEditable="true" onInput={(e) => {}} ref={ref}>
-          {post[0].title}
+        <StContentArea contentEditable="true" onInput={(e) => {}} ref={titleRef}>
+          {post.title}
         </StContentArea>
       </StInputDiv>
       <StInputDiv>
         <StObject>태그</StObject>
-        <StContentArea contentEditable="true" onInput={(e) => {}}>
-          {post[0].tags.map((item, idx) => {
-            if (idx !== post[0].tags.length - 1) {
-              return <p key={idx}>{'#' + item + ','}</p>;
-            }
-            return <p key={idx}>{'#' + item}</p>;
-          })}
+        <StContentArea contentEditable="true" onInput={(e) => {}} ref={tagsRef}>
+          {post.tags.split(',').map(tag=>'#'+tag)}
         </StContentArea>
       </StInputDiv>
       <StInputDiv>
@@ -91,7 +83,6 @@ const PostEdit = () => {
           onChange={onChangeContents}
         />
       </StInputDiv>
-      {/* <ReactQuill value={fetchContents} /> */}
     </>
   );
 };
