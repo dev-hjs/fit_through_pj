@@ -1,5 +1,3 @@
-// css, 로고
-
 import { useEffect, useState } from 'react';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
@@ -38,8 +36,24 @@ const SignUp = () => {
   const signUp = async (event) => {
     event.preventDefault();
 
+    if (!email) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+    if (!password) {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
     if (password !== confirmPassword) {
       alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    if (password.length < 8) {
+      alert('비밀번호는 최소 8자리 이상이어야 합니다.');
+      return;
+    }
+    if (!email.includes('@')) {
+      alert('이메일 주소를 올바르게 작성해주세요.');
       return;
     }
 
@@ -47,15 +61,16 @@ const SignUp = () => {
       setIsLoading(true);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       setTimeout(() => {
-        alert('회원가입 완료!', userCredential.user);
+        alert('회원가입이 완료되었습니다!', userCredential.user);
         navigate('/login');
       }, 500);
     } catch (error) {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      setTimeout(() => {
-        alert('회원가입 오류', errorCode, errorMessage);
-      }, 500);
+      if (errorCode === 'auth/email-already-in-use') {
+        alert('중복된 이메일입니다. 다른 이메일을 작성해주세요.');
+      } else {
+        alert('회원가입이 완료되지 않았습니다. 형식에 맞게 다시 작성해주세요.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -79,6 +94,15 @@ const SignUp = () => {
   return (
     <L.LoginPage>
       <L.LoginContent>
+        <Link to="/">
+          <L.Logo
+            style={{
+              height: '60px'
+            }}
+            src="img/mainlogo.jpg"
+            alt="main logo"
+          />
+        </Link>
         <L.Title>SIGN UP</L.Title>
         <L.WrapperBox>
           <L.Box type="email" value={email} name="email" onChange={onChange} placeholder="Email address" required />
@@ -94,8 +118,8 @@ const SignUp = () => {
           <L.SignUpBtn onClick={signUp} disabled={isLoading}>
             Sign Up
           </L.SignUpBtn>
-          <Link to="/">
-            <L.HomeBtn>Home</L.HomeBtn>
+          <Link to="/login">
+            <L.HomeBtn>Log In</L.HomeBtn>
           </Link>
           {/* <button onClick={signIn}>로그인</button> */}
           {/* <button onClick={logOut}>로그아웃</button> */}
@@ -131,6 +155,11 @@ const L = {
     -webkit-transition: all 0.2s ease-out;
     transition: all 0.2s ease-out;
     transition-delay: 0.2s;
+  `,
+  Logo: styled.img`
+    margin: 0 auto 50px;
+    text-align: center;
+    display: block;
   `,
   Title: styled.h2`
     text-align: left;
@@ -168,7 +197,9 @@ const L = {
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, 0.233);
     margin-top: 20px;
-    background-color: #fff;
+    background-color: #35c5f0;
+    color: #fff;
+    font-weight: bold;
     cursor: pointer;
   `,
   HomeBtn: styled.button`
@@ -179,9 +210,7 @@ const L = {
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, 0.233);
     margin-top: 20px;
-    background-color: #35c5f0;
-    color: #fff;
-    font-weight: bold;
+    background-color: #fff;
     cursor: pointer;
   `
 };
