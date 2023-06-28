@@ -1,5 +1,3 @@
-// css, 로고
-
 import { useEffect, useState } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
@@ -46,6 +44,15 @@ const Login = () => {
   const signIn = async (event) => {
     event.preventDefault();
 
+    if (!email) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+    if (!password) {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+
     try {
       setIsLoading(true);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -54,7 +61,7 @@ const Login = () => {
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      alert('아이디 혹은 비밀번호가 일치하지 않습니다.', errorCode, errorMessage);
+      alert('이메일 혹은 비밀번호가 일치하지 않습니다.', errorCode, errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -67,6 +74,15 @@ const Login = () => {
   return (
     <L.LoginPage>
       <L.LoginContent>
+        <Link to="/">
+          <L.Logo
+            style={{
+              height: '60px'
+            }}
+            src="img/mainlogo.jpg"
+            alt="main logo"
+          />
+        </Link>
         {/* <img src={process.env.PUBLIC_URL + '..logo.png'} alt="fit_through 로고" /> */}
         <L.Title>LOG IN</L.Title>
         <L.WrapperBox>
@@ -116,7 +132,11 @@ const L = {
     transition: all 0.2s ease-out;
     transition-delay: 0.2s;
   `,
-
+  Logo: styled.img`
+    margin: 0 auto 50px;
+    text-align: center;
+    display: block;
+  `,
   Title: styled.h2`
     text-align: left;
     color: #35c5f0;
@@ -154,7 +174,9 @@ const L = {
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, 0.233);
     margin-top: 20px;
-    background-color: #fff;
+    background-color: #35c5f0;
+    color: #fff;
+    font-weight: bold;
     cursor: pointer;
   `,
   SignBtn: styled.button`
@@ -165,9 +187,7 @@ const L = {
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, 0.233);
     margin-top: 20px;
-    background-color: #35c5f0;
-    color: #fff;
-    font-weight: bold;
+    background-color: #fff;
     cursor: pointer;
   `
 };
