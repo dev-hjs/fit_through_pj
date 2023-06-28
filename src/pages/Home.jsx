@@ -49,27 +49,25 @@ const StPostList = styled.div`
   align-items: center;
 `;
 
-
 const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
-  return (
-    <div>
-      <div>Home</div>
-      <button onClick={openModal}>글쓰기</button>
-      {isModalOpen && <PostRegist closeModal={closeModal} />}
-      <div></div>
-    </div>
-  );
-
+  // return (
+  //   <div>
+  //     <div>Home</div>
+  //     <button onClick={openModal}>글쓰기</button>
+  //     {isModalOpen && <PostRegist closeModal={closeModal} />}
+  //     <div></div>
+  //   </div>
+  // );
 
   // ----------------------------------
   return (
