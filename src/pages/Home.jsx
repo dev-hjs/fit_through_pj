@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PostRegist from './PostRegist';
 import styled from 'styled-components';
 
 const StHeader = styled.header`
@@ -48,17 +49,27 @@ const StPostList = styled.div`
   align-items: center;
 `;
 
+
 const Home = () => {
-  localStorage.setItem(
-    'dummy',
-    JSON.stringify({
-      uid: '1',
-      title: '더미입니다',
-      tag: ['식단', '상체', '하체', '영양제'],
-      content: '더미예용',
-      img: 'img url'
-    })
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div>
+      <div>Home</div>
+      <button onClick={openModal}>글쓰기</button>
+      {isModalOpen && <PostRegist closeModal={closeModal} />}
+      <div></div>
+    </div>
   );
+
 
   // ----------------------------------
   return (
