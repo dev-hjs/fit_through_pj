@@ -8,12 +8,12 @@ import 'react-quill/dist/quill.snow.css';
 
 const PostEdit = () => {
   const [post, setPost] = useState({ title: '', content: '', tags: ',' });
-  const param = useParams()
+  const param = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const doc1 = doc(db, 'posts', param.pid)
-      const docData = await getDoc(doc1)
+      const doc1 = doc(db, 'posts', param.pid);
+      const docData = await getDoc(doc1);
 
       setPost(docData.data());
       setTestContents(docData.data().content);
@@ -30,24 +30,19 @@ const PostEdit = () => {
 
   const titleRef = useRef(null);
   const tagsRef = useRef(null);
-  
+
   useEffect(() => {
-    console.log(titleRef.current.innerHTML)
+    console.log(titleRef.current.innerHTML);
     titleRef.current.focus();
   }, []);
 
   const updatePost = () => {
-    alert('저장완료!')
-
-  }
+    alert('저장완료!');
+  };
   return (
     <>
       <StEditDiv>
-        <StBtn
-          onClick={updatePost}
-        >
-          완료
-        </StBtn>
+        <StBtn onClick={updatePost}>완료</StBtn>
         <StBtn
           onClick={() => {
             const check = window.confirm('아직 작성이 완료되지 않았습니다. 정말로 돌아가시겠습니까?');
@@ -68,7 +63,7 @@ const PostEdit = () => {
       <StInputDiv>
         <StObject>태그</StObject>
         <StContentArea contentEditable="true" onInput={(e) => {}} ref={tagsRef}>
-          {post.tags.split(',').map(tag=>'#'+tag)}
+          {post.tags.split(',').map((tag) => '#' + tag)}
         </StContentArea>
       </StInputDiv>
       <StInputDiv>
