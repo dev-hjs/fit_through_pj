@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import PostRegist from './PostRegist';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { collection, getDocs, query } from 'firebase/firestore';
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,15 +23,15 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   // closeModal();
 
@@ -44,40 +44,7 @@ const Home = () => {
   // };
   return (
     <>
-      <StHeader>
-        <div>
-          <Link to="/">
-            <img
-              style={{
-                height: '60px'
-              }}
-              src="img/mainlogo.jpg"
-              alt="main logo"
-            />
-          </Link>
-        </div>
-        <StForm>
-          <input
-            style={{
-              height: '30px',
-              width: '350px'
-            }}
-            type="text"
-            placeholder=" 검색어를 입력하세요 !"
-          />
-          <StSearchBtn></StSearchBtn>
-        </StForm>
-        <div>
-          <Link to="/login">
-            <StButton>로그인</StButton>
-          </Link>
-          <Link to="/mypage/:uid">
-            <StButton>👤</StButton>
-          </Link>
-          <StButton onClick={openModal}>✏️</StButton>
-          {isModalOpen && <PostRegist closeModal={closeModal} />}
-        </div>
-      </StHeader>
+      <Header />
       <main
         style={{
           // border: '1px solid black',
@@ -120,29 +87,12 @@ const Home = () => {
           <StPostContainer></StPostContainer>
         </StPostList>
       </main>
-      <footer
-        style={{
-          // border: '1px solid black',
-          margin: '10px',
-          padding: '10px'
-        }}
-      >
-        <div></div>
-      </footer>
+      <Footer />
     </>
   );
 };
 
 export default Home;
-
-const StHeader = styled.header`
-  /* border: 1px solid black; */
-  margin: 10px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
 
 const StCategoryBtn = styled.button`
   background-color: #96ddf2;
@@ -177,22 +127,22 @@ const StPostContainer = styled.div`
   }
 `;
 
-const StButton = styled.button`
-  background-color: white;
-  border: 0px;
-  /* height: 50px; */
-`;
+// const StButton = styled.button`
+//   background-color: white;
+//   border: 0px;
+//   /* height: 50px; */
+// `;
 
 const StPostList = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const StSearchBtn = styled.button`
-  background-color: white;
-  border: 0px;
-`;
+// const StSearchBtn = styled.button`
+//   background-color: white;
+//   border: 0px;
+// `;
 
-const StForm = styled.form`
-  position: relative;
-`;
+// const StForm = styled.form`
+//   position: relative;
+// `;
