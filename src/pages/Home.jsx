@@ -1,6 +1,131 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostRegist from './PostRegist';
 import styled from 'styled-components';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../firebase';
+
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, 'posts'));
+      const initialState = querySnapshot.docs.map((doc) => doc.data());
+      console.log(initialState);
+      setPosts(initialState);
+    };
+    fetchData();
+  }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // -----------토글 메뉴 만들면 쓸 것?
+  // const Navbar = () => {
+  //   const [isOpen, setNav] = useState(false);
+  //   const toggleNav = () => {
+  //     setNav((isOpen) => !isOpen);
+  //   };
+  // };
+
+
+  return (
+    <>
+      <StHeader>
+        <div>
+          <img
+            style={{
+              height: '60px'
+            }}
+            src="img/mainlogo.jpg"
+            alt="main logo"
+          />
+        </div>
+        <StForm>
+          <input
+            style={{
+              height: '30px',
+              width: '350px'
+            }}
+            type="text"
+            placeholder=" 검색어를 입력하세요 !"
+          />
+          <StSearchBtn></StSearchBtn>
+        </StForm>
+        <div>
+
+          <StButton>로그인</StButton>
+          <StButton>👤</StButton>
+
+
+          <StButton onClick={openModal}>✏️</StButton>
+          {isModalOpen && <PostRegist closeModal={closeModal} />}
+        </div>
+      </StHeader>
+      <main
+        style={{
+          // border: '1px solid black',
+          margin: '10px',
+          padding: '10px',
+          height: '100%'
+        }}
+      >
+        {/* <h2>Main</h2> */}
+        <div>
+          <StCategoryBtn>#전체글🧡</StCategoryBtn>
+          <StCategoryBtn>#상체운동💪🏻</StCategoryBtn>
+          <StCategoryBtn>#하체운동🏃🏻‍</StCategoryBtn>
+          <StCategoryBtn>#영양제추천💊</StCategoryBtn>
+          <StCategoryBtn>#식단공유🥗</StCategoryBtn>
+          <StCategoryBtn>#다이어트꿀팁🍯</StCategoryBtn>
+        </div>
+        <br />
+        <StPostList>
+
+          {posts.map((post) => (
+            <StPostContainer key={post.id}>
+              <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+              {/* <h3>{post.authorId}</h3> */}
+            </StPostContainer>
+          ))}
+
+         
+        </StPostList>
+        <br />
+        <div>
+          <button>더보기</button>
+        </div>
+        <br />
+        <StPostList>
+          <StPostContainer></StPostContainer>
+          <StPostContainer></StPostContainer>
+          <StPostContainer></StPostContainer>
+          <StPostContainer></StPostContainer>
+          <StPostContainer></StPostContainer>
+        </StPostList>
+      </main>
+      <footer
+        style={{
+          // border: '1px solid black',
+          margin: '10px',
+          padding: '10px'
+        }}
+      >
+        <div></div>
+      </footer>
+    </>
+  );
+};
+
+export default Home;
 
 const StHeader = styled.header`
   /* border: 1px solid black; */
@@ -30,6 +155,18 @@ const StPostContainer = styled.div`
   background-color: #e0e0e0;
   border-radius: 5px;
   margin: 5px;
+  & div {
+    width: 100%;
+    height: 100%;
+    & p {
+      width: 100%;
+      height: 100%;
+      & img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 `;
 
 const StButton = styled.button`
@@ -38,135 +175,16 @@ const StButton = styled.button`
   /* height: 50px; */
 `;
 
-const StIcon = styled.button`
-  margin-right: 10px;
-  background-color: white;
-  border: 0px;
-`;
-
 const StPostList = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const Home = () => {
-  // const [docs, setDocs] = useState('')
-  // useEffect(()=>{
-  //   const fetchData = async () => {
-  //     const querySnapshot = await getDocs(collection(db, 'posts'));
-  //     const initialState = [] // [{},{},{},{},{}]
-  //     querySnapshot.forEach((doc)=>{
-  //       initialState.push(doc.data())
-  //       console.log(`${doc.id}=>${doc.data()}`)
-  //     })
-  //     setDocs(initialState)
-  //   }
-  //   fetchData()
-  // },[])
-  //-------------------------------------
-  // 게시글 작성 모달창
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const StSearchBtn = styled.button`
+  background-color: white;
+  border: 0px;
+`;
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // return (
-  //   <div>
-  //     <div>Home</div>
-  //     <button onClick={openModal}>글쓰기</button>
-  //     {isModalOpen && <PostRegist closeModal={closeModal} />}
-  //     <div></div>
-  //   </div>
-  // );
-
-  // ----------------------------------
-  return (
-    <>
-      <StHeader>
-        <div>
-          <img
-            style={{
-              height: '60px'
-            }}
-            src="img/mainlogo.jpg"
-            alt="main logo"
-          />
-        </div>
-        <form>
-          <input
-            style={{
-              height: '30px',
-              width: '350px'
-            }}
-            type="text"
-            placeholder=" 검색어를 입력하세요 !"
-          />
-          <StButton>🔍</StButton>
-        </form>
-        <div>
-          <StIcon>로그인</StIcon>
-          <StIcon>👤</StIcon>
-          <StButton onClick={openModal}>✏️</StButton>
-          {isModalOpen && <PostRegist closeModal={closeModal} />}
-        </div>
-      </StHeader>
-      <main
-        style={{
-          // border: '1px solid black',
-          margin: '10px',
-          padding: '10px',
-          height: '100%'
-        }}
-      >
-        {/* <h2>Main</h2> */}
-        <div>
-          <StCategoryBtn>#전체글🧡</StCategoryBtn>
-          <StCategoryBtn>#상체운동💪🏻</StCategoryBtn>
-          <StCategoryBtn>#하체운동🏃🏻‍</StCategoryBtn>
-          <StCategoryBtn>#영양제추천💊</StCategoryBtn>
-          <StCategoryBtn>#식단공유🥗</StCategoryBtn>
-          <StCategoryBtn>#다이어트꿀팁🍯</StCategoryBtn>
-        </div>
-        <br />
-        <StPostList>
-          {/* {docs.map(doc=>{
-            return (<StPostContainer></StPostContainer>)
-          })} */}
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-        </StPostList>
-        <br />
-        <div>
-          <button>더보기</button>
-        </div>
-        <br />
-        <StPostList>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-        </StPostList>
-      </main>
-      <footer
-        style={{
-          // border: '1px solid black',
-          margin: '10px',
-          padding: '10px'
-        }}
-      >
-        footer
-      </footer>
-    </>
-  );
-};
-
-export default Home;
+const StForm = styled.form`
+  position: relative;
+`;
