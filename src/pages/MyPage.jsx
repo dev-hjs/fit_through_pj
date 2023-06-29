@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { app, auth, db, storage } from '../firebase';
+import Header from '../components/Header/Header';
 
 const S = {
   MypageBodyWrap: styled.div`
@@ -212,6 +213,7 @@ const MyPage = () => {
 
   return (
     <>
+      <Header />
       <S.MypageBodyWrap>
         <S.FlexWrap>
           <S.MypageProfile>
