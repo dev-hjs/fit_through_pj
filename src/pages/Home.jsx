@@ -3,6 +3,7 @@ import PostRegist from './PostRegist';
 import styled from 'styled-components';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../firebase';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -19,7 +20,6 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -27,6 +27,8 @@ const Home = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // closeModal();
 
   // -----------토글 메뉴 만들면 쓸 것?
   // const Navbar = () => {
@@ -36,18 +38,19 @@ const Home = () => {
   //   };
   // };
 
-
   return (
     <>
       <StHeader>
         <div>
-          <img
-            style={{
-              height: '60px'
-            }}
-            src="img/mainlogo.jpg"
-            alt="main logo"
-          />
+          <Link to="/">
+            <img
+              style={{
+                height: '60px'
+              }}
+              src="img/mainlogo.jpg"
+              alt="main logo"
+            />
+          </Link>
         </div>
         <StForm>
           <input
@@ -61,10 +64,12 @@ const Home = () => {
           <StSearchBtn></StSearchBtn>
         </StForm>
         <div>
-
-          <StButton>로그인</StButton>
-          <StButton>👤</StButton>
-
+          <Link to="/login">
+            <StButton>로그인</StButton>
+          </Link>
+          <Link to="/mypage/:uid">
+            <StButton>👤</StButton>
+          </Link>
 
           <StButton onClick={openModal}>✏️</StButton>
           {isModalOpen && <PostRegist closeModal={closeModal} />}
@@ -89,15 +94,12 @@ const Home = () => {
         </div>
         <br />
         <StPostList>
-
           {posts.map((post) => (
             <StPostContainer key={post.id}>
               <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
               {/* <h3>{post.authorId}</h3> */}
             </StPostContainer>
           ))}
-
-         
         </StPostList>
         <br />
         <div>
