@@ -10,7 +10,7 @@ const PostEdit = () => {
   const [post, setPost] = useState([{ title: '', content: '', tags: [''] }]);
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, 'test01'));
+      const q = query(collection(db, 'posts'));
       const querySnapshot = await getDocs(q);
       const testPost = [];
       querySnapshot.forEach((doc) => {
@@ -37,10 +37,7 @@ const PostEdit = () => {
   useEffect(() => {
     ref.current.focus();
   }, []);
-  // useEffect(() => {
-  //   return localStorage.setItem('test', JSON.stringify(testContents));
-  // }, [testContents]);
-  const fetchContents = JSON.parse(localStorage.getItem('test'));
+
   return (
     <>
       <StEditDiv>
@@ -91,7 +88,6 @@ const PostEdit = () => {
           onChange={onChangeContents}
         />
       </StInputDiv>
-      {/* <ReactQuill value={fetchContents} /> */}
     </>
   );
 };

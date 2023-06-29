@@ -50,15 +50,30 @@ const StPostList = styled.div`
 `;
 
 const Home = () => {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [docs, setDocs] = useState('')
+  // useEffect(()=>{
+  //   const fetchData = async () => {
+  //     const querySnapshot = await getDocs(collection(db, 'posts'));
+  //     const initialState = [] // [{},{},{},{},{}]
+  //     querySnapshot.forEach((doc)=>{
+  //       initialState.push(doc.data())
+  //       console.log(`${doc.id}=>${doc.data()}`)
+  //     })
+  //     setDocs(initialState)
+  //   }
+  //   fetchData()
+  // },[])
+  //-------------------------------------
+  // 게시글 작성 모달창
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // return (
   //   <div>
@@ -96,7 +111,8 @@ const Home = () => {
         <div>
           <StIcon>로그인</StIcon>
           <StIcon>👤</StIcon>
-          <StButton>✏️</StButton>
+          <StButton onClick={openModal}>✏️</StButton>
+          {isModalOpen && <PostRegist closeModal={closeModal} />}
         </div>
       </StHeader>
       <main
@@ -118,6 +134,9 @@ const Home = () => {
         </div>
         <br />
         <StPostList>
+          {/* {docs.map(doc=>{
+            return (<StPostContainer></StPostContainer>)
+          })} */}
           <StPostContainer></StPostContainer>
           <StPostContainer></StPostContainer>
           <StPostContainer></StPostContainer>
