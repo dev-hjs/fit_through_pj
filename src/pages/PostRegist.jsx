@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { styled } from 'styled-components';
@@ -8,10 +8,19 @@ import { addDoc, collection } from 'firebase/firestore';
 
 const PostRegist = ({ closeModal }) => {
   const [currentUser, setCurrentUser] = useState('');
-
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState('');
   const [content, setConent] = useState('');
+  const [selectedTag, setSelectedTag] = useState('');
+
+  const postTags = ['#상체운동', '#하체운동', '#영양제주천', '#식단공유', '#다이어트꿀팁'];
+
+  const handletagClick = (tag) => {
+    setSelectedTag(tag);
+  };
+  // const handleTagSave = () => {
+  //   selectedTag()
+  // };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -41,41 +50,64 @@ const PostRegist = ({ closeModal }) => {
     await addDoc(collectionRef, post);
 
     closeModal();
+    setSelectedTag('');
 
     setTitle('');
     setTags('');
     setConent('');
   };
 
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }, 'link', 'image']
+        ]
+      }
+    };
+  }, []);
   return (
-    <S.ModalContainer>
+    <>
+      <S.ModalContainer onClick={closeModal} />
       <S.ModalContent>
-        <div>
-          <S.InputGroup>
-            <S.InputLabel>제목:</S.InputLabel>
-            <S.ModalInput type="text" value={title} onChange={handleAddTitle} />
-          </S.InputGroup>
-          <S.InputGroup>
-            <S.InputLabel>태그:</S.InputLabel>
-            <S.ModalInput type="text" value={tags} onChange={handleAddTag} />
-          </S.InputGroup>
-          <S.InputGroup>
-            <S.InputLabel>내용:</S.InputLabel>
-            <ReactQuill
-              style={{
-                width: '80%',
-                border: '1px solid gray',
-                borderRadius: '5px'
+        <S.InputGroup>
+          <S.InputLabel>제목:</S.InputLabel>
+          <S.ModalInput type="text" value={title} onChange={handleAddTitle} />
+        </S.InputGroup>
+        <S.InputGroup>
+          {/* <S.InputLabel>태그:</S.InputLabel>
+          <S.ModalInput type="text" value={tags} onChange={handleAddTag} /> */}
+          {postTags.map((tag) => (
+            <S.TagsButton
+              className={`tag${tag === selectedTag ? 'active' : ''}`}
+              onClick={() => {
+                handletagClick(tag);
               }}
-              value={content}
-              onChange={handleAddContent}
-            />
-            {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
-          </S.InputGroup>
-          <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
-        </div>
+            ></S.TagsButton>
+          ))}
+        </S.InputGroup>
+        <S.InputGroup>
+          <S.InputLabel>내용:</S.InputLabel>
+          <ReactQuill
+            style={{
+              width: '80%',
+              border: '1px solid gray',
+              borderRadius: '5px'
+            }}
+            value={content}
+            onChange={handleAddContent}
+            modules={modules}
+          />
+          {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
+        </S.InputGroup>
+        <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
       </S.ModalContent>
-    </S.ModalContainer>
+    </>
   );
 };
 
@@ -145,5 +177,13 @@ const S = {
     flex: 1;
     height: 60px;
     padding: 10px;
+  `,
+
+  TagsButton: styled.button`
+    width: 85px;
+    height: 25px;
+    background-color: ${(props) => (props.className.includes('active') ? '#35c5f0' : 'transparent')};
+    color: ${(props) => (props.className.includes('active') ? '#fff' : '#000')};
+    border-radius: 5px;
   `
 };

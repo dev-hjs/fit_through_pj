@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PostRegist from './PostRegist';
 import styled from 'styled-components';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PostDetail from './PostDetail';
 
 const Home = () => {
   const dispatch = useDispatch();
   const postsData = useSelector((state) => state.posts);
-  console.log(postsData);
   useEffect(() => {
     const fetchData = async () => {
       const initialState = [];
@@ -23,16 +23,27 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openRegistModal = () => {
+    setIsRegistModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeRegistModal = () => {
+    setIsRegistModalOpen(false);
   };
 
+  const [postData, setPostData] = useState('');
+
+  const openDetailModal = (post) => {
+    setPostData(post);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+  };
   // closeModal();
 
   // -----------토글 메뉴 만들면 쓸 것?
@@ -74,8 +85,9 @@ const Home = () => {
           <Link to="/mypage/:uid">
             <StButton>👤</StButton>
           </Link>
-          <StButton onClick={openModal}>✏️</StButton>
-          {isModalOpen && <PostRegist closeModal={closeModal} />}
+          <StButton onClick={openRegistModal}>✏️</StButton>
+          {isRegistModalOpen && <PostRegist closeModal={closeRegistModal} />}
+          {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
         </div>
       </StHeader>
       <main
@@ -99,11 +111,10 @@ const Home = () => {
         <StPostList>
           {postsData.map((post) => (
             <>
-              <StPostContainer key={post.id}>
+              <StPostContainer key={post.pid} onClick={() => openDetailModal(post)}>
                 <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
                 {/* <h3>{post.authorId}</h3> */}
               </StPostContainer>
-              <div>{post.title}</div>
             </>
           ))}
         </StPostList>
@@ -154,6 +165,9 @@ const StCategoryBtn = styled.button`
   border: none;
   padding: 3px 10px 5px 10px;
   margin-right: 10px;
+  &.active {
+    background-color: #35c5f0;
+  }
 `;
 
 const StPostContainer = styled.div`
