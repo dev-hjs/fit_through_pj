@@ -1,31 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { auth, db } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import { styled } from 'styled-components';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { addDoc, collection } from 'firebase/firestore';
 
 const PostRegist = ({ closeModal }) => {
+  const [currentUser, setCurrentUser] = useState('');
+
   const [title, setTitle] = useState('');
-  const [tag, setTag] = useState('');
+  const [tags, setTags] = useState('');
   const [content, setConent] = useState('');
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user.uid);
+        console.log('user', user);
+      }
+    });
+  }, []);
 
   const handleAddTitle = (e) => {
     setTitle(e.target.value);
   };
   const handleAddTag = (e) => {
-    setTag(e.target.value);
+    setTags(e.target.value);
   };
-  const handleAddContent = (e) => {
-    setConent(e.target.value);
+  const handleAddContent = (contents) => {
+    setConent(contents);
   };
 
-  const handleSave = () => {
-    const post = { title, tag, content };
-    const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
-    const updatedPosts = [...savedPosts, post];
-    localStorage.setItem('posts', JSON.stringify(updatedPosts));
+  const handleSave = async () => {
+    const post = { authorId: currentUser, title, tags, content };
+
+    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
+    const collectionRef = collection(db, 'posts');
+    // 'todos' 컬렉션에 newTodo 문서를 추가합니다.
+    await addDoc(collectionRef, post);
 
     closeModal();
 
     setTitle('');
-    setTag('');
+    setTags('');
     setConent('');
   };
 
@@ -39,11 +57,20 @@ const PostRegist = ({ closeModal }) => {
           </S.InputGroup>
           <S.InputGroup>
             <S.InputLabel>태그:</S.InputLabel>
-            <S.ModalInput type="text" value={tag} onChange={handleAddTag} />
+            <S.ModalInput type="text" value={tags} onChange={handleAddTag} />
           </S.InputGroup>
           <S.InputGroup>
             <S.InputLabel>내용:</S.InputLabel>
-            <S.ModalInputContent type="text" value={content} onChange={handleAddContent} />
+            <ReactQuill
+              style={{
+                width: '80%',
+                border: '1px solid gray',
+                borderRadius: '5px'
+              }}
+              value={content}
+              onChange={handleAddContent}
+            />
+            {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
           </S.InputGroup>
           <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
         </div>
@@ -88,7 +115,7 @@ const S = {
 
   ModalButton: styled.button`
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #35c5f0;
     color: #fff;
     border: none;
     border-radius: 5px;

@@ -19,6 +19,7 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -34,6 +35,7 @@ const Home = () => {
   //     setNav((isOpen) => !isOpen);
   //   };
   // };
+
 
   return (
     <>
@@ -59,8 +61,11 @@ const Home = () => {
           <StSearchBtn></StSearchBtn>
         </StForm>
         <div>
+
           <StButton>로그인</StButton>
           <StButton>👤</StButton>
+
+
           <StButton onClick={openModal}>✏️</StButton>
           {isModalOpen && <PostRegist closeModal={closeModal} />}
         </div>
@@ -84,12 +89,15 @@ const Home = () => {
         </div>
         <br />
         <StPostList>
+
           {posts.map((post) => (
             <StPostContainer key={post.id}>
               <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
               {/* <h3>{post.authorId}</h3> */}
             </StPostContainer>
           ))}
+
+         
         </StPostList>
         <br />
         <div>
