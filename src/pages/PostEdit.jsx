@@ -1,126 +1,165 @@
-import { doc, getDoc } from 'firebase/firestore';
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { styled } from 'styled-components';
 import { db } from '../firebase';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
-const PostEdit = () => {
-  const [post, setPost] = useState({ title: '', content: '', tags: ',' });
-  const param = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const doc1 = doc(db, 'posts', param.pid);
-      const docData = await getDoc(doc1);
-
-      setPost(docData.data());
-      setTestContents(docData.data().content);
-    };
-    fetchData();
-  }, []);
-
+const PostEdit = ({ postData, closeModal }) => {
   const navigate = useNavigate();
 
-  const [testContents, setTestContents] = useState('');
-  const onChangeContents = (contents) => {
-    setTestContents(contents);
-  };
+  const [title, setTitle] = useState(postData.title);
+  const [tags, setTags] = useState(postData.tags);
+  const [content, setConent] = useState(postData.content);
 
   const titleRef = useRef(null);
-  const tagsRef = useRef(null);
+  // const tagsRef = useRef(null);
 
   useEffect(() => {
-    console.log(titleRef.current.innerHTML);
     titleRef.current.focus();
   }, []);
 
-  const updatePost = () => {
-    alert('저장완료!');
+  const handleAddTitle = (e) => {
+    setTitle(e.target.value);
   };
+  const handleAddTag = (e) => {
+    setTags(e.target.value);
+  };
+  const handleAddContent = (contents) => {
+    setConent(contents);
+  };
+  const handleSave = async () => {
+    const post = {
+      authorId: postData.authorId,
+      title,
+      tags,
+      content
+    };
+    await setDoc(doc(db, 'posts', postData.pid), post);
+    alert('저장완료!');
 
+    window.location.replace('/');
+
+    setTitle('');
+    setTags('');
+    setConent('');
+  };
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }, 'link', 'image']
+        ],
+        handlers: {
+          // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
+          // image: imageHandler,
+        }
+      }
+    };
+  }, []);
   return (
     <>
-      <StEditDiv>
-        <StBtn onClick={updatePost}>완료</StBtn>
-        <StBtn
-          onClick={() => {
-            const check = window.confirm('아직 작성이 완료되지 않았습니다. 정말로 돌아가시겠습니까?');
-            if (check) {
-              navigate(`/posts/${param.pid}`);
-            }
-          }}
-        >
-          돌아가기
-        </StBtn>
-      </StEditDiv>
-      <StInputDiv>
-        <StObject>제목</StObject>
-        <StContentArea contentEditable="true" onInput={(e) => {}} ref={titleRef}>
-          {post.title}
-        </StContentArea>
-      </StInputDiv>
-      <StInputDiv>
-        <StObject>태그</StObject>
-        <StContentArea contentEditable="true" onInput={(e) => {}} ref={tagsRef}>
-          {post.tags.split(',').map((tag) => '#' + tag)}
-        </StContentArea>
-      </StInputDiv>
-      <StInputDiv>
-        <StObject>내용</StObject>
-        <ReactQuill
-          style={{
-            width: '80%',
-            border: '1px solid gray',
-            borderRadius: '5px'
-          }}
-          value={testContents}
-          onChange={onChangeContents}
-        />
-      </StInputDiv>
+      <S.ModalContainer onClick={closeModal} />
+      <S.ModalContent>
+        <S.InputGroup>
+          <S.InputLabel>제목:</S.InputLabel>
+          <S.ModalInput ref={titleRef} type="text" value={title} onChange={handleAddTitle} />
+        </S.InputGroup>
+        <S.InputGroup>
+          <S.InputLabel>태그:</S.InputLabel>
+          <S.ModalInput type="text" value={tags} onChange={handleAddTag} />
+        </S.InputGroup>
+        <S.InputGroup>
+          <S.InputLabel>내용:</S.InputLabel>
+          <ReactQuill
+            style={{
+              width: '80%',
+              border: '1px solid gray',
+              borderRadius: '5px'
+            }}
+            value={content}
+            onChange={handleAddContent}
+            modules={modules}
+          />
+          {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
+        </S.InputGroup>
+        <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
+      </S.ModalContent>
     </>
   );
 };
 
 export default PostEdit;
 
-const StEditDiv = styled.div`
-  width: 1200px;
-  height: 40px;
-  position: fixed;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  top: 0;
-`;
-const StInputDiv = styled.div`
-  display: flex;
-  width: 1000px;
-  justify-content: space-between;
-  align-items: center;
-  margin: 50px 0;
-`;
-const StObject = styled.p`
-  font-size: 35px;
-  font-weight: bold;
-`;
-const StContentArea = styled.div`
-  width: 80%;
-  min-height: ${({ content }) => (content ? '500px' : '22px')};
-  border: 1px solid gray;
-  border-radius: 5px;
-  display: flex;
-  padding-top: 5px;
-  padding-left: 3px;
-  overflow: hidden;
-  caret-color: #35c5f0;
-`;
-const StBtn = styled.button`
-  height: 30px;
-  border-radius: 10px;
-  background-color: transparent;
-  border: 1px solid #35c5f0;
-  margin: 0 5px;
-  cursor: pointer;
-`;
+const S = {
+  ModalContainer: styled.div`
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+
+  ModalContent: styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 400px;
+    height: 500px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+    transform: translateX(-50%) translateY(-50%);
+  `,
+
+  ModalButton: styled.button`
+    padding: 10px 20px;
+    background-color: #35c5f0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  `,
+
+  InputGroup: styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  `,
+
+  InputLabel: styled.label`
+    flex: 0 0 80px;
+    text-align: right;
+    margin-right: 10px;
+    margin-right: 10px;
+  `,
+
+  ModalInput: styled.input`
+    flex: 1;
+    height: 10px;
+    padding: 10px;
+  `,
+
+  ModalInputContent: styled.input`
+    flex: 1;
+    height: 60px;
+    padding: 10px;
+  `
+};

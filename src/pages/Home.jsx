@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+
+import { Link } from 'react-router-dom';
+import PostDetail from './PostDetail';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +12,6 @@ import { db } from '../firebase';
 const Home = () => {
   const dispatch = useDispatch();
   const postsData = useSelector((state) => state.posts);
-  console.log(postsData);
   useEffect(() => {
     const fetchData = async () => {
       const initialState = [];
@@ -23,16 +25,29 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
+  const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
+  const openRegistModal = () => {
+    setIsRegistModalOpen(true);
+  };
 
+  const closeRegistModal = () => {
+    setIsRegistModalOpen(false);
+  };
+
+
+  const [postData, setPostData] = useState('');
+
+  const openDetailModal = (post) => {
+    setPostData(post);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+  };
   // closeModal();
 
   // -----------토글 메뉴 만들면 쓸 것?
@@ -44,7 +59,10 @@ const Home = () => {
   // };
   return (
     <>
+
+
       <Header />
+
       <main
         style={{
           // border: '1px solid black',
@@ -66,11 +84,10 @@ const Home = () => {
         <StPostList>
           {postsData.map((post) => (
             <>
-              <StPostContainer key={post.id}>
+              <StPostContainer key={post.pid} onClick={() => openDetailModal(post)}>
                 <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
                 {/* <h3>{post.authorId}</h3> */}
               </StPostContainer>
-              <div>{post.title}</div>
             </>
           ))}
         </StPostList>
@@ -104,6 +121,9 @@ const StCategoryBtn = styled.button`
   border: none;
   padding: 3px 10px 5px 10px;
   margin-right: 10px;
+  &.active {
+    background-color: #35c5f0;
+  }
 `;
 
 const StPostContainer = styled.div`
