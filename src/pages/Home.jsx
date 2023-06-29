@@ -3,17 +3,22 @@ import PostRegist from './PostRegist';
 import styled from 'styled-components';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
-
+  const dispatch = useDispatch();
+  const postsData = useSelector((state) => state.posts);
+  console.log(postsData);
   useEffect(() => {
     const fetchData = async () => {
+      const initialState = [];
+
       const querySnapshot = await getDocs(collection(db, 'posts'));
-      const initialState = querySnapshot.docs.map((doc) => doc.data());
-      console.log(initialState);
-      setPosts(initialState);
+      querySnapshot.forEach((doc) => {
+        initialState.push({ ...doc.data(), pid: doc.id });
+      });
+      dispatch({ type: '초기세팅', payload: initialState });
     };
     fetchData();
   }, []);
@@ -37,7 +42,6 @@ const Home = () => {
   //     setNav((isOpen) => !isOpen);
   //   };
   // };
-
   return (
     <>
       <StHeader>
@@ -70,7 +74,6 @@ const Home = () => {
           <Link to="/mypage/:uid">
             <StButton>👤</StButton>
           </Link>
-
           <StButton onClick={openModal}>✏️</StButton>
           {isModalOpen && <PostRegist closeModal={closeModal} />}
         </div>
@@ -94,11 +97,14 @@ const Home = () => {
         </div>
         <br />
         <StPostList>
-          {posts.map((post) => (
-            <StPostContainer key={post.id}>
-              <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-              {/* <h3>{post.authorId}</h3> */}
-            </StPostContainer>
+          {postsData.map((post) => (
+            <>
+              <StPostContainer key={post.id}>
+                <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                {/* <h3>{post.authorId}</h3> */}
+              </StPostContainer>
+              <div>{post.title}</div>
+            </>
           ))}
         </StPostList>
         <br />

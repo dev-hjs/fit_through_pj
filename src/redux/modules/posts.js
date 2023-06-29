@@ -1,7 +1,10 @@
-import React from 'react';
-
-const posts = () => {
-  return <div>posts</div>;
+const posts = (state = [], action) => {
+  switch (action.type) {
+    case '초기세팅':
+      return action.payload;
+    default:
+      return state;
+  }
 };
 
 export default posts;
