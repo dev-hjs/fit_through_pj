@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Link } from 'react-router-dom';
@@ -25,7 +25,6 @@ const Home = () => {
     fetchData();
   }, []);
 
-
   const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
@@ -36,7 +35,6 @@ const Home = () => {
   const closeRegistModal = () => {
     setIsRegistModalOpen(false);
   };
-
 
   const [postData, setPostData] = useState('');
 
@@ -59,10 +57,8 @@ const Home = () => {
   // };
   return (
     <>
-
-
       <Header />
-
+      {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
       <main
         style={{
           // border: '1px solid black',
