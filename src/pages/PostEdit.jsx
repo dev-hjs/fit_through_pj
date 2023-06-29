@@ -39,6 +39,7 @@ const PostEdit = () => {
   const updatePost = () => {
     alert('저장완료!');
   };
+
   return (
     <>
       <StEditDiv>
