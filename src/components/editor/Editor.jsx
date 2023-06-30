@@ -10,12 +10,9 @@ Quill.register('modules/imageResize', ImageResize);
 
 const Editor = ({ placeholder, value, ...rest }) => {
   const uploadImage = async (file, filePath) => {
-    console.log(storage);
     const fileRef = ref(storage, `imgs/${filePath}`);
-    console.log(file);
     const snapshot = await uploadBytes(fileRef, file);
     const url = await getDownloadURL(snapshot.ref);
-    console.log(url);
     return url;
   };
 

@@ -4,36 +4,22 @@ import searchBtn from '../../images/btn-search.png';
 import { Link, useNavigate } from 'react-router-dom';
 import PostRegist from '../../pages/PostRegist';
 import { LiaUserCircleSolid } from 'react-icons/lia';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { collection, getDocs } from 'firebase/firestore';
 import { auth, signOut } from '../../firebase';
-// import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+
 const Header = () => {
-  // const dispatch = useDispatch();
-  // const postsData = useSelector((state) => state.posts);
-  // console.log(postsData);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const initialState = [];
-
-  //     const querySnapshot = await getDocs(collection(db, 'posts'));
-  //     querySnapshot.forEach((doc) => {
-  //       initialState.push({ ...doc.data(), pid: doc.id });
-  //     });
-  //     dispatch({ type: '초기세팅', payload: initialState });
-  //   };
-  //   fetchData();
-  // }, []);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    if (isLoggedIn) {
+      setIsModalOpen(true);
+    } else {
+      navigate('/login'); // 수정된 부분: 로그인 페이지로 이동하는 경로 '/login'으로 변경
+    }
   };
 
   const navigate = useNavigate();
@@ -47,15 +33,10 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
 
-  const onLogoutClick = () => {
+  const onLogOutClick = () => {
     auth.signOut();
     navigate('/');
   };
-
-  // const logOut = async (event) => {
-  //   event.preventDefault();
-  //   await signOut(auth);
-  // };
 
   return (
     <StHeader>
@@ -68,13 +49,15 @@ const Header = () => {
           <img src={searchBtn} alt="검색 이미지" />
         </StSearchBtn>
       </StForm>
-      <StBtns>
+     <StBtns>
         {!isLoggedIn ? (
           <Link to="/login">
-            <StButton className="login-btn">로그인</StButton>
+            <StButton className="login-btn">Login</StButton>
           </Link>
         ) : (
-          <button onClick={onLogoutClick}>로그아웃</button>
+          <StButton className="logout-btn" onClick={onLogOutClick}>
+            Logout
+          </StButton>
         )}
         <StButton>
           <Link to={`/mypage/${auth?.currentUser?.uid}`} className="profile-btn">
@@ -138,10 +121,12 @@ const StBtns = styled.div`
     text-decoration: none;
     .login-btn {
       display: block;
-      margin-top: 17px;
+      margin-top: 16px;
       margin-right: 0;
     }
-
+    .logout-btn {
+      margin-top: 50px;
+    }
     & button .profile-btn {
       margin-top: 126px;
     }
@@ -152,6 +137,7 @@ const StButton = styled.button`
   background-color: white;
   border: 0px;
   font-size: 16px;
+  cursor: pointer;
 `;
 
 const StPostingBtn = styled.button`
@@ -163,16 +149,6 @@ const StPostingBtn = styled.button`
   border-radius: 5px;
   background-color: #35c5f0;
 `;
-
-// const StTooltip = styled.div`
-//   position: absolute;
-//   top: 40px;
-//   right: 0;
-//   padding: 10px;
-//   background-color: #f0f0f0;
-//   border: 1px solid #ccc;
-//   border-radius: 5px;
-// `;
 
 const StyledUserIcon = styled(LiaUserCircleSolid)`
   margin-top: 7px;

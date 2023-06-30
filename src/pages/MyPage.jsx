@@ -43,7 +43,6 @@ const MyPage = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log('user', user);
     });
   }, []);
 
@@ -56,7 +55,7 @@ const MyPage = () => {
           <P.MypagePost>
             <P.PostTitleWrap>
               <P.MyPostTitle>내 게시글</P.MyPostTitle>
-              <P.PostViewLink to="/전체보기">전체보기</P.PostViewLink>
+              <P.PostViewLink to="/">전체글 보러가기</P.PostViewLink>
             </P.PostTitleWrap>
             <P.PostList>
               <P.ImageGrid>

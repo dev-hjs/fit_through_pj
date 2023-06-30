@@ -4916,6 +4916,11 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
+fbase@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/fbase/-/fbase-1.0.0.tgz#dbd378f2c83b0676dce1b4fa22b66dbc2430e4d4"
+  integrity sha512-kLgCx/J7QMSfPkMD5jeim2HL0ThajHjxKN5y/sEtzRrdwn5MGuy+j86gNBpGgpAVObIvG4pKaWZi3GGt0f3WeQ==
+
 file-entry-cache@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-6.0.1.tgz"

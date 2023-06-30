@@ -1,15 +1,11 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { db } from '../firebase';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { doc, setDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
 import Editor from '../components/editor/Editor';
 
 const PostEdit = ({ postData, closeModal }) => {
-  const navigate = useNavigate();
-
   const [title, setTitle] = useState(postData.title);
   const [tags, setTags] = useState(postData.tags);
   const [content, setConent] = useState(postData.content);
