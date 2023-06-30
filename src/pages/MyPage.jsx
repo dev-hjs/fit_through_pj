@@ -131,6 +131,7 @@ const P = {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 15px 35px;
+    width: 100%;
 
     img {
       border-radius: 10px;
