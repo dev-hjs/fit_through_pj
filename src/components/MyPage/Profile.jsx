@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { auth } from '../../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
+const defaultProfileImage =
+  'https://firebasestorage.googleapis.com/v0/b/fit-through-41507.appspot.com/o/logo512.png?alt=media&token=d764bd69-9646-49b5-89d7-62953a3f991f'; // Replace with your default image path
+
 const Profile = () => {
   const [user, setUser] = useState(null);
 
@@ -19,17 +22,17 @@ const Profile = () => {
   }, []);
 
   if (user === null) {
-    return <div>Please log in to view your profile.</div>;
+    return <div>마이페이지 프로필을 보시려면 로그인을 해주세요.</div>;
   }
 
   const displayName = user.displayName;
   const email = user.email;
-  const photoURL = user.photoURL;
+  const photoURL = user.photoURL ? user.photoURL : defaultProfileImage;
   const uid = user.uid;
 
   return (
     <P.MypageProfile>
-      <img src={photoURL} alt="사용자 프로필 이미지ㄴ" />
+      <img src={photoURL} alt="사용자 프로필 이미지" />
       <P.MypageName>{displayName}</P.MypageName>
       <P.MyEmail>{email}</P.MyEmail>
       <P.MyIntro>{uid}</P.MyIntro>
