@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import Editor from '../components/editor/Editor';
 
 const PostEdit = ({ postData, closeModal }) => {
   const navigate = useNavigate();
@@ -45,24 +46,7 @@ const PostEdit = ({ postData, closeModal }) => {
     setTags('');
     setConent('');
   };
-  const modules = useMemo(() => {
-    return {
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, false] }],
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          [{ color: [] }, { background: [] }],
-          [{ align: [] }, 'link', 'image']
-        ],
-        handlers: {
-          // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
-          // image: imageHandler,
-        }
-      }
-    };
-  }, []);
+
   return (
     <>
       <S.ModalContainer onClick={closeModal} />
@@ -77,7 +61,7 @@ const PostEdit = ({ postData, closeModal }) => {
         </S.InputGroup>
         <S.InputGroup>
           <S.InputLabel>내용:</S.InputLabel>
-          <ReactQuill
+          <Editor
             style={{
               width: '80%',
               border: '1px solid gray',
@@ -85,9 +69,7 @@ const PostEdit = ({ postData, closeModal }) => {
             }}
             value={content}
             onChange={handleAddContent}
-            modules={modules}
           />
-          {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
         </S.InputGroup>
         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
       </S.ModalContent>

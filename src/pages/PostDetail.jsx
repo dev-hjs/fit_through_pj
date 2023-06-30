@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import DOMPurify from 'dompurify';
 import { onAuthStateChanged } from '@firebase/auth';
 import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 import PostEdit from './PostEdit';
+import { deleteDoc, doc } from 'firebase/firestore';
 
 const PostDetail = ({ postData, closeModal }) => {
   const posts = useSelector((state) => state.posts);
@@ -34,13 +35,23 @@ const PostDetail = ({ postData, closeModal }) => {
   const closeEditModal = () => {
     setIsEditModalOpen(false);
   };
+  const deletePost = async () => {
+    const check = window.confirm('정말 삭제하시겠습니까?');
+    if (check) {
+      const postRef = doc(db, 'posts', postData.pid);
+      await deleteDoc(postRef);
+
+      window.location.reload();
+    }
+  };
+
   return (
     <>
       <S.ModalContainer onClick={closeModal} />
       <S.ModalContent>
         {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
         {isSame && <button onClick={openEditModal}>수정</button>}
-        {isSame && <button>삭제</button>}
+        {isSame && <button onClick={deletePost}>삭제</button>}
         <div>제목: {postDetails.title}</div>
         <div>태그: {postDetails.tags}</div>
         <div
