@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import styled from 'styled-components';
 import Header from '../components/Header/Header';
+import Profile from '../components/MyPage/Profile';
 
 const MyPage = () => {
   const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
-    // 사용자가 로그인한 경우에만 실행되도록 체크
     if (auth.currentUser) {
       const fetchData = async () => {
         const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
@@ -27,19 +28,23 @@ const MyPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('user', user);
+    });
+  }, []);
+
   return (
     <>
       <Header />
       <P.MypageBodyWrap>
         <P.FlexWrap>
-          <P.MypageProfile>dddd</P.MypageProfile>
-
+          <Profile />
           <P.MypagePost>
             <P.PostTitleWrap>
               <P.MyPostTitle>내 게시글</P.MyPostTitle>
               <P.PostViewLink to="/전체보기">전체보기</P.PostViewLink>
             </P.PostTitleWrap>
-
             <P.PostList>
               <P.ImageGrid>
                 {userPosts.map((post) => (
