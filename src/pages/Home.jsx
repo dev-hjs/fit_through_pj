@@ -121,7 +121,7 @@ const Home = () => {
       >
         {/* <h2>Main</h2> */}
         <div>
-          <StCategoryBtn>#전체글🧡</StCategoryBtn>
+          <StCategoryBtn onClick={() => filterPostData('')}>#전체글🧡</StCategoryBtn>
           <StCategoryBtn
             className={selectedTags.includes('상체운동') ? 'active' : ''}
             onClick={() => {
@@ -192,20 +192,11 @@ const Home = () => {
                       __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
                     }}
                   ></div>
-                  {/* <h3>{post.authorId}</h3> */}
+                  <h3>{post.title}</h3>
                 </StPostContainer>
               </>
             );
           })}
-        </StPostList>
-        <StPostList></StPostList>
-        <br />
-        <StPostList>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
         </StPostList>
       </main>
     </>
@@ -214,14 +205,14 @@ const Home = () => {
 
 export default Home;
 
-const StHeader = styled.header`
-  /* border: 1px solid black; */
-  margin: 10px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
+// const StHeader = styled.header`
+//   /* border: 1px solid black; */
+//   margin: 10px;
+//   padding: 10px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// `;
 
 const StCategoryBtn = styled.button`
   background-color: #96ddf2;
@@ -240,9 +231,9 @@ const StCategoryBtn = styled.button`
 `;
 
 const StPostContainer = styled.div`
-  width: 20%;
-  height: 150px;
-  border: 1px solid black;
+  width: 100%;
+  height: 260px;
+  /* border: 1px solid black; */
   background-color: #e0e0e0;
   border-radius: 5px;
   margin: 5px;
@@ -260,22 +251,30 @@ const StPostContainer = styled.div`
   }
 `;
 
-const StButton = styled.button`
-  background-color: white;
-  border: 0px;
-  /* height: 50px; */
-`;
+// const StButton = styled.button`
+//   background-color: white;
+//   border: 0px;
+//   /* height: 50px; */
+// `;
 
 const StPostList = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px 35px;
+  width: 100%;
   align-items: center;
+  & div {
+    & img {
+      object-fit: cover;
+    }
+  }
 `;
 
-const StSearchBtn = styled.button`
-  background-color: white;
-  border: 0px;
-`;
+// const StSearchBtn = styled.button`
+//   background-color: white;
+//   border: 0px;
+// `;
 
-const StForm = styled.form`
-  position: relative;
-`;
+// const StForm = styled.form`
+//   position: relative;
+// `;

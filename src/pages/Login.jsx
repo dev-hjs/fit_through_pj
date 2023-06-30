@@ -95,7 +95,6 @@ const Login = () => {
           <Link to="/SignUp">
             <L.SignBtn>Sign Up</L.SignBtn>
           </Link>
-          {/* <button onClick={logOut}>로그아웃</button> */}
         </L.WrapperBox>
       </L.LoginContent>
     </L.LoginPage>

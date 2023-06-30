@@ -64,20 +64,18 @@ const PostEdit = ({ postData, closeModal }) => {
           <S.ModalInput type="text" value={tags} onChange={handleAddTag} />
         </S.InputGroup>
         <S.InputGroup>
-
           <S.ReactQuill>
-           <Editor
-            style={{
-              width: '80%',
-              border: '1px solid gray',
-              borderRadius: '5px'
-            }}
-            value={content}
-            onChange={handleAddContent}
-          />
+            <Editor
+              style={{
+                width: '100%',
+                border: '1px solid gray',
+                borderRadius: '5px'
+              }}
+              value={content}
+              onChange={handleAddContent}
+            />
           </S.ReactQuill>
           {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
-
         </S.InputGroup>
         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
       </S.ModalContent>
