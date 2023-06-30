@@ -29,6 +29,7 @@ const PostEdit = ({ postData, closeModal }) => {
   };
   const handleAddTag = (e) => {
     setTags(e.target.value);
+    setSelectedTag(e.target.value);
   };
   const handleAddContent = (contents) => {
     setConent(contents);
