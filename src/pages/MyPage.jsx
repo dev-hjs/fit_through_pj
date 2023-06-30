@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import styled from 'styled-components';
 import Header from '../components/Header/Header';
 import Profile from '../components/MyPage/Profile';
+import PostDetail from './PostDetail';
 
 const MyPage = () => {
   const [userPosts, setUserPosts] = useState([]);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [postData, setPostData] = useState('');
+
+  const openDetailModal = (post) => {
+    setPostData(post);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setIsDetailModalOpen(false);
+  };
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -47,18 +60,30 @@ const MyPage = () => {
             </P.PostTitleWrap>
             <P.PostList>
               <P.ImageGrid>
-                {userPosts.map((post) => (
-                  <P.ImgList key={post.id}>
-                    {/* <h3>{post.title}</h3> */}
-                    {/* <p>{post.content}</p> */}
-                    <P.Img dangerouslySetInnerHTML={{ __html: post.content }}></P.Img>
-                  </P.ImgList>
-                ))}
+                {userPosts.map((post) => {
+                  const contentHTML = post.content;
+                  const parser = new DOMParser();
+                  const parsedHTML = parser.parseFromString(contentHTML, 'text/html');
+                  let thumbnailURL = '';
+                  if (contentHTML.includes('<img src=')) {
+                    const imageTag = parsedHTML.querySelector('img');
+                    thumbnailURL = imageTag.getAttribute('src');
+                  }
+                  return (
+                    <P.ImgList key={post.id} onClick={() => post && openDetailModal(post)}>
+                      <P.Img
+                        dangerouslySetInnerHTML={{ __html: `<img width="100%" height="100%" src=${thumbnailURL}>` }}
+                      ></P.Img>
+                      <P.PostTitle>{post.title}</P.PostTitle>
+                    </P.ImgList>
+                  );
+                })}
               </P.ImageGrid>
             </P.PostList>
           </P.MypagePost>
         </P.FlexWrap>
       </P.MypageBodyWrap>
+      {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
     </>
   );
 };
@@ -75,26 +100,6 @@ const P = {
     display: flex;
     justify-content: space-between;
   `,
-  MypageProfile: styled.div`
-    margin-top: 30px;
-    padding: 30px 55px 18px;
-    position: relative;
-    max-width: 270px;
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 310px;
-    height: 100%;
-    border: 1px solid rgb(218, 220, 224);
-    box-shadow: rgba(63, 71, 77, 0.06) 0px 2px 4px 0px;
-    img {
-      margin: 0 auto;
-      display: block;
-      width: 100%;
-      height: 158px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-  `,
   MypagePost: styled.section`
     margin-top: 50px;
     max-width: 700px;
@@ -108,43 +113,45 @@ const P = {
     color: #000000;
     font-weight: bold;
     font-size: 18px;
-    line-height: 1;
   `,
   PostViewLink: styled(Link)`
-    font-weight: bold;
-    color: #35c5f0;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    color: #1b1b1b;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: underline;
   `,
   PostList: styled.div`
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    img {
-      border-radius: 10px;
-    }
+    margin-top: 10px;
+    // display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 12px;
   `,
   ImageGrid: styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 15px 35px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 25px;
+  `,
+  ImgList: styled.div`
     width: 100%;
-
-    img {
-      border-radius: 10px;
-      width: 100%;
-      height: 150px;
+    height: 216px;
+    // padding-bottom: 100%;
+    position: relative;
+    cursor: pointer;
+    & div > img {
       object-fit: cover;
+      border-radius: 10px;
     }
   `,
-  ImgList: styled.div``,
   Img: styled.div`
-    p {
-      width: 100%;
-      height: 150px;
-    }
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  `,
+  PostTitle: styled.h3`
+    position: absolute;
+    bottom: -21px;
+    text-align: center;
   `
 };

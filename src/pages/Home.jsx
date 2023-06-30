@@ -197,15 +197,6 @@ const Home = () => {
             );
           })}
         </StPostList>
-        <StPostList></StPostList>
-        <br />
-        <StPostList>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-          <StPostContainer></StPostContainer>
-        </StPostList>
       </main>
     </>
   );
@@ -248,6 +239,9 @@ const StPostContainer = styled.div`
   & div {
     width: 100%;
     height: 100%;
+    & img {
+      object-fit: cover;
+    }
     & p {
       width: 100%;
       height: 100%;
