@@ -68,25 +68,31 @@ const PostEdit = ({ postData, closeModal }) => {
       <S.ModalContainer onClick={closeModal} />
       <S.ModalContent>
         <S.InputGroup>
-          <S.InputLabel>제목:</S.InputLabel>
-          <S.ModalInput ref={titleRef} type="text" value={title} onChange={handleAddTitle} />
+          <S.ModalInput
+            placeholder="제목을 입력해주세요"
+            ref={titleRef}
+            type="text"
+            value={title}
+            onChange={handleAddTitle}
+          />
         </S.InputGroup>
         <S.InputGroup>
-          <S.InputLabel>태그:</S.InputLabel>
           <S.ModalInput type="text" value={tags} onChange={handleAddTag} />
         </S.InputGroup>
         <S.InputGroup>
-          <S.InputLabel>내용:</S.InputLabel>
-          <ReactQuill
-            style={{
-              width: '80%',
-              border: '1px solid gray',
-              borderRadius: '5px'
-            }}
-            value={content}
-            onChange={handleAddContent}
-            modules={modules}
-          />
+          <S.ReactQuill>
+            <ReactQuill
+              placeholder="내용을 입력하세요"
+              style={{
+                width: '100%',
+                border: '1px solid gray',
+                borderRadius: '5px'
+              }}
+              value={content}
+              onChange={handleAddContent}
+              modules={modules}
+            />
+          </S.ReactQuill>
           {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
         </S.InputGroup>
         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
@@ -115,7 +121,7 @@ const S = {
     top: 50%;
     left: 50%;
 
-    width: 400px;
+    width: 410px;
     height: 500px;
 
     padding: 40px;
@@ -144,13 +150,6 @@ const S = {
     margin-bottom: 10px;
   `,
 
-  InputLabel: styled.label`
-    flex: 0 0 80px;
-    text-align: right;
-    margin-right: 10px;
-    margin-right: 10px;
-  `,
-
   ModalInput: styled.input`
     flex: 1;
     height: 10px;
@@ -161,5 +160,11 @@ const S = {
     flex: 1;
     height: 60px;
     padding: 10px;
+  `,
+
+  ReactQuill: styled.div`
+    .ql-editor {
+      min-height: 300px;
+    }
   `
 };

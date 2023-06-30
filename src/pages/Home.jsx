@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import PostRegist from './PostRegist';
 import styled from 'styled-components';
+
 
 // import { Link } from 'react-router-dom';
 import PostDetail from './PostDetail';
@@ -7,7 +9,11 @@ import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+
 import { db } from '../firebase';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PostDetail from './PostDetail';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -55,6 +61,7 @@ const Home = () => {
   };
   // closeModal();
 
+
   const [selectedTags, setSelectedTags] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
@@ -85,10 +92,52 @@ const Home = () => {
     }
   };
 
+  // -----------토글 메뉴 만들면 쓸 것?
+  // const Navbar = () => {
+  //   const [isOpen, setNav] = useState(false);
+  //   const toggleNav = () => {
+  //     setNav((isOpen) => !isOpen);
+  //   };
+  // };
+
+
   return (
     <>
-      <Header />
-      {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
+      <StHeader>
+        <div>
+          <Link to="/">
+            <img
+              style={{
+                height: '60px'
+              }}
+              src="img/mainlogo.jpg"
+              alt="main logo"
+            />
+          </Link>
+        </div>
+        <StForm>
+          <input
+            style={{
+              height: '30px',
+              width: '350px'
+            }}
+            type="text"
+            placeholder=" 검색어를 입력하세요 !"
+          />
+          <StSearchBtn></StSearchBtn>
+        </StForm>
+        <div>
+          <Link to="/login">
+            <StButton>로그인</StButton>
+          </Link>
+          <Link to="/mypage/:uid">
+            <StButton>👤</StButton>
+          </Link>
+          <StButton onClick={openRegistModal}>✏️</StButton>
+          {isRegistModalOpen && <PostRegist closeModal={closeRegistModal} />}
+          {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
+        </div>
+      </StHeader>
       <main
         style={{
           // border: '1px solid black',
@@ -152,12 +201,29 @@ const Home = () => {
           <StPostContainer></StPostContainer>
         </StPostList>
       </main>
-      <Footer />
+      <footer
+        style={{
+          // border: '1px solid black',
+          margin: '10px',
+          padding: '10px'
+        }}
+      >
+        <div></div>
+      </footer>
     </>
   );
 };
 
 export default Home;
+
+const StHeader = styled.header`
+  /* border: 1px solid black; */
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const StCategoryBtn = styled.button`
   background-color: #96ddf2;
@@ -196,22 +262,22 @@ const StPostContainer = styled.div`
   }
 `;
 
-// const StButton = styled.button`
-//   background-color: white;
-//   border: 0px;
-//   /* height: 50px; */
-// `;
+const StButton = styled.button`
+  background-color: white;
+  border: 0px;
+  /* height: 50px; */
+`;
 
 const StPostList = styled.div`
   display: flex;
   align-items: center;
 `;
 
-// const StSearchBtn = styled.button`
-//   background-color: white;
-//   border: 0px;
-// `;
+const StSearchBtn = styled.button`
+  background-color: white;
+  border: 0px;
+`;
 
-// const StForm = styled.form`
-//   position: relative;
-// `;
+const StForm = styled.form`
+  position: relative;
+`;

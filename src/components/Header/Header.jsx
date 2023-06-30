@@ -6,7 +6,7 @@ import PostRegist from '../../pages/PostRegist';
 import { LiaUserCircleSolid } from 'react-icons/lia';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { collection, getDocs } from 'firebase/firestore';
-// import { db } from '../../firebase';
+import { auth } from '../../firebase';
 
 const Header = () => {
   // const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const Header = () => {
           <StButton className="login-btn">로그인</StButton>
         </Link>
         <StButton>
-          <Link to="/mypage/:uid" className="profile-btn">
+          <Link to={`/mypage/${auth?.currentUser?.uid}`} className="profile-btn">
             <StyledUserIcon size="30" />
           </Link>
         </StButton>
