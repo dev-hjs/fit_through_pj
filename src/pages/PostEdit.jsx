@@ -38,7 +38,7 @@ const PostEdit = ({ postData, closeModal }) => {
     const post = {
       authorId: postData.authorId,
       title,
-      tags,
+      tags:[selectedTag],
       content
     };
     await setDoc(doc(db, 'posts', postData.pid), post);
