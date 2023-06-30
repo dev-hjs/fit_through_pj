@@ -10,13 +10,10 @@ Quill.register('modules/imageResize', ImageResize);
 
 const Editor = ({ placeholder, value, ...rest }) => {
   const uploadImage = async (file, filePath) => {
-    console.log('업로딩확인');
     console.log(storage);
     const fileRef = ref(storage, `imgs/${filePath}`);
-    console.log('await 전');
     console.log(file);
     const snapshot = await uploadBytes(fileRef, file);
-    console.log('await file 후');
     const url = await getDownloadURL(snapshot.ref);
     console.log(url);
     return url;
@@ -26,7 +23,6 @@ const Editor = ({ placeholder, value, ...rest }) => {
 
   useEffect(() => {
     const handleImage = () => {
-      console.log('핸들이미지확인');
       const editor = quillRef.current.getEditor();
       const input = document.createElement('input');
       input.setAttribute('type', 'file');
@@ -45,9 +41,7 @@ const Editor = ({ placeholder, value, ...rest }) => {
           // 필자는 파이어 스토어에 저장하기 때문에 이런식으로 유틸함수를 따로 만들어줬다
           // 이런식으로 서버에 업로드 한뒤 이미지 태그에 삽입할 url을 반환받도록 구현하면 된다
           const filePath = `contents/temp/${Date.now()}`;
-          console.log('url기다리기 전');
           const url = await uploadImage(file, filePath);
-          console.log('url기다리는중');
 
           // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
           editor.deleteText(range.index, 1);
@@ -63,7 +57,6 @@ const Editor = ({ placeholder, value, ...rest }) => {
     };
 
     if (quillRef.current) {
-      console.log('작동확인');
       const toolbar = quillRef.current.getEditor().getModule('toolbar');
       toolbar.addHandler('image', handleImage);
     }
