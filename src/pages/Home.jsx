@@ -13,6 +13,8 @@ import PostDetail from './PostDetail';
 const Home = () => {
   const dispatch = useDispatch();
   const postsData = useSelector((state) => state.posts);
+  const [data, setData] = useState(postsData);
+
   useEffect(() => {
     const fetchData = async () => {
       let initialState = [];
@@ -28,7 +30,13 @@ const Home = () => {
 
     fetchData();
   }, []);
-
+  useEffect(() => {
+    const filteredData = postsData.filter((post) => {
+      post.tags.includes('하체');
+    });
+    console.log(filteredData);
+    setData(postsData);
+  }, [postsData]);
   const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
@@ -85,7 +93,12 @@ const Home = () => {
       setSelectedTags([...selectedTags, tag]);
     }
   };
-
+  const filterPostData = (tag) => {
+    const filteredData = postsData.filter((post) => {
+      return post.tags[0].includes(tag);
+    });
+    setData(filteredData);
+  };
   // -----------토글 메뉴 만들면 쓸 것?
   // const Navbar = () => {
   //   const [isOpen, setNav] = useState(false);
@@ -111,38 +124,57 @@ const Home = () => {
           <StCategoryBtn>#전체글🧡</StCategoryBtn>
           <StCategoryBtn
             className={selectedTags.includes('상체운동') ? 'active' : ''}
-            onClick={() => toggleTag('#상체운동')}
+            onClick={() => {
+              toggleTag('#상체운동');
+              filterPostData('#상체운동');
+            }}
           >
             #상체운동💪🏻
           </StCategoryBtn>
           <StCategoryBtn
             className={selectedTags.includes('하체운동') ? 'active' : ''}
-            onClick={() => toggleTag('#하체운동')}
+            onClick={() => {
+              toggleTag('#하체운동');
+
+              filterPostData('#하체운동');
+            }}
           >
             #하체운동🏃🏻‍
           </StCategoryBtn>
           <StCategoryBtn
             className={selectedTags.includes('영양제추천') ? 'active' : ''}
-            onClick={() => toggleTag('#영양제추천')}
+            onClick={() => {
+              toggleTag('#영양제추천');
+
+              filterPostData('#영양제추천');
+            }}
           >
             #영양제추천💊
           </StCategoryBtn>
           <StCategoryBtn
             className={selectedTags.includes('식단공유') ? 'active' : ''}
-            onClick={() => toggleTag('#식단공유')}
+            onClick={() => {
+              toggleTag('#식단공유');
+
+              filterPostData('#식단공유');
+            }}
           >
             #식단공유🥗
           </StCategoryBtn>
           <StCategoryBtn
             className={selectedTags.includes('다이어트꿀팁') ? 'active' : ''}
-            onClick={() => toggleTag('#다이어트꿀팁')}
+            onClick={() => {
+              toggleTag('#다이어트꿀팁');
+
+              filterPostData('#다이어트꿀팁');
+            }}
           >
             #다이어트꿀팁🍯
           </StCategoryBtn>
         </div>
         <br />
         <StPostList>
-          {postsData.map((post) => {
+          {data.map((post) => {
             const contentHTML = post.content;
             const parser = new DOMParser();
             const parsedHTML = parser.parseFromString(contentHTML, 'text/html');
