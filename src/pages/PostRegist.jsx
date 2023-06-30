@@ -14,7 +14,7 @@ const PostRegist = ({ closeModal }) => {
   const [content, setConent] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
 
-  const postTags = ['#상체운동💪🏼', '#하체운동🏃🏻', '#영양제주천💊', '#식단공유🥗', '#다이어트꿀팁🍯'];
+  const postTags = ['#상체운동💪🏼', '#하체운동🏃🏻', '#영양제추천💊', '#식단공유🥗', '#다이어트꿀팁🍯'];
 
   // const handletagClick = (tag) => {
   //   setSelectedTag((prevTag) => (prevTag === tag ? '' : tag));
@@ -102,19 +102,17 @@ const PostRegist = ({ closeModal }) => {
           </S.TagsDropdown>
         </S.InputGroup>
         <S.InputGroup>
-
           <S.ReactQuill>
             <Editor
-            style={{
-              width: '80%',
-              border: '1px solid gray',
-              borderRadius: '5px'
-            }}
-            value={content}
-            onChange={handleAddContent}
-          />
+              style={{
+                width: '100%',
+                border: '1px solid gray',
+                borderRadius: '5px'
+              }}
+              value={content}
+              onChange={handleAddContent}
+            />
           </S.ReactQuill>
-
         </S.InputGroup>
         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
       </S.ModalContent>

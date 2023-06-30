@@ -119,9 +119,8 @@ const Home = () => {
           height: '100%'
         }}
       >
-        {/* <h2>Main</h2> */}
         <div>
-          <StCategoryBtn>#전체글🧡</StCategoryBtn>
+          <StCategoryBtn onClick={() => filterPostData('')}>#전체글🧡</StCategoryBtn>
           <StCategoryBtn
             className={selectedTags.includes('상체운동') ? 'active' : ''}
             onClick={() => {
