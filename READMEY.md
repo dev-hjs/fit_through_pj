@@ -6,7 +6,7 @@ Firebase API를 이용한 건강 정보 공유 플랫폼 사이트입니다.
 
 ## 사이트 주소
 
-https://fit-through.vercel.app
+https://
 
 ## 🕰️ 개발 기간
 
