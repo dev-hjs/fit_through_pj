@@ -86,7 +86,9 @@ const PostRegist = ({ closeModal }) => {
         </S.InputGroup>
         <S.InputGroup>
           <S.TagsDropdown value={selectedTag} onChange={handleTagChange}>
-            <option value="">태그 선택</option>
+            <option value="">
+              태그 선택 <small>(필수)</small>
+            </option>
             {postTags.map((tag) => (
               <option
                 key={tag}
@@ -139,22 +141,18 @@ const S = {
     position: absolute;
     top: 50%;
     left: 50%;
-
-    width: 410px;
-    height: 500px;
-
+    width: 770px;
+    min-height: 500px;
     padding: 40px;
-
     text-align: center;
-
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
     transform: translateX(-50%) translateY(-50%);
   `,
 
   ModalButton: styled.button`
+    margin-top: 10px;
     padding: 10px 20px;
     background-color: #35c5f0;
     color: #fff;
@@ -164,15 +162,17 @@ const S = {
   `,
 
   InputGroup: styled.div`
-    display: flex;
-    align-items: center;
     margin-bottom: 10px;
   `,
 
   ModalInput: styled.input`
     flex: 1;
-    height: 10px;
+    // height: 50px;
+    box-sizing: border-box;
     padding: 10px;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
   `,
 
   ModalInputContent: styled.input`

@@ -7,6 +7,9 @@ const GlobalStyle = createGlobalStyle`
   height: 100vh;
   margin: auto;
 }
+button, a {
+  cursor: pointer;
+}
 `;
 
 export default GlobalStyle;

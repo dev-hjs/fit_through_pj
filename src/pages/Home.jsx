@@ -239,6 +239,9 @@ const StPostContainer = styled.div`
   & div {
     width: 100%;
     height: 100%;
+    & img {
+      object-fit: cover;
+    }
     & p {
       width: 100%;
       height: 100%;

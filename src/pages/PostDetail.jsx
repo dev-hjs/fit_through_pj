@@ -10,8 +10,8 @@ import { deleteDoc, doc } from 'firebase/firestore';
 const PostDetail = ({ postData, closeModal }) => {
   const posts = useSelector((state) => state.posts);
   const postDetails = posts.filter((post) => {
-    if (post.authorId === postData.authorId) {
-      if (post.content === postData.content) return post;
+    if (post.authorId === postData.authorId && post.content === postData.content) {
+      return post;
     }
   })[0];
 
@@ -39,7 +39,8 @@ const PostDetail = ({ postData, closeModal }) => {
   const deletePost = async () => {
     const check = window.confirm('정말 삭제하시겠습니까?');
     if (check) {
-      const postRef = doc(db, 'posts', postData.pid);
+      console.log(postData);
+      const postRef = doc(db, 'posts', postData.id);
       await deleteDoc(postRef);
 
       window.location.reload();
@@ -50,12 +51,17 @@ const PostDetail = ({ postData, closeModal }) => {
     <>
       <S.ModalContainer onClick={closeModal} />
       <S.ModalContent>
-        {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
-        <S.PlacedButton>
-          {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
-          {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
-        </S.PlacedButton>
-        <div>제목: {postDetails.title}</div>
+        <S.ModalFlex>
+          {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
+          <S.ModalButtonX onClick={closeModal}>X</S.ModalButtonX>
+        </S.ModalFlex>
+        <S.ModalTitleWrap>
+          <S.ModalTitle>제목: {postDetails.title}</S.ModalTitle>
+          <S.PlacedButton>
+            {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
+            {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
+          </S.PlacedButton>
+        </S.ModalTitleWrap>
         <hr />
         <div>{postDetails.tags}</div>
         <S.ImgContent
@@ -87,29 +93,39 @@ const S = {
     position: absolute;
     top: 50%;
     left: 50%;
-
-    width: 400px;
-    height: 500px;
-
+    width: 770px;
+    min-height: 500px;
     padding: 40px;
-
     text-align: center;
-
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
     transform: translateX(-50%) translateY(-50%);
   `,
-
+  ModalFlex: styled.div`
+    display: flex;
+    justify-content: end;
+    align-items: baseline;
+  `,
   ModalButton: styled.button`
+    margin-left: 5px;
     padding: 5px 10px;
-    margin-right: 2px;
     background-color: #35c5f0;
+    font-size: 17px;
+    font-weight: bold;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+  `,
+  ModalButtonX: styled.button`
+    background-color: #fff;
+    font-size: 20px;
+    color: #63605f;
+    border: none;
+    position: absolute;
+    top: 7px;
+    right: 5px;
   `,
 
   ModalInput: styled.input`
@@ -128,8 +144,15 @@ const S = {
     width: 100%;
     padding-top: 50px;
   `,
-
-  PlacedButton: styled.div`
+  ModalTitleWrap: styled.div`
+    position: relative;
+    z-index: -1;
+  `,
+  ModalTitle: styled.p`
+    position: absolute;
+    font-size: 30px;
+  `,
+  PlacedButton: styled.span`
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;

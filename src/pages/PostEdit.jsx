@@ -34,13 +34,13 @@ const PostEdit = ({ postData, closeModal }) => {
     const post = {
       authorId: postData.authorId,
       title,
-      tags:[selectedTag],
+      tags: [selectedTag],
       content
     };
-    await setDoc(doc(db, 'posts', postData.pid), post);
+    await setDoc(doc(db, 'posts', postData.id), post);
     alert('저장완료!');
 
-    window.location.replace('/');
+    window.location.replace(`/mypage/${post.authorId}`);
 
     setTitle('');
     setTags('');
@@ -117,18 +117,13 @@ const S = {
     position: absolute;
     top: 50%;
     left: 50%;
-
-    width: 410px;
-    height: 500px;
-
+    width: 770px;
+    min-height: 500px;
     padding: 40px;
-
     text-align: center;
-
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
     transform: translateX(-50%) translateY(-50%);
   `,
 
@@ -142,15 +137,19 @@ const S = {
   `,
 
   InputGroup: styled.div`
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     margin-bottom: 10px;
   `,
 
   ModalInput: styled.input`
-    flex: 1;
-    height: 10px;
+    height: 30px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 10px;
+    font-size: 20px;
+    height: 47px;
+    font-weight: bold;
   `,
 
   ModalInputContent: styled.input`

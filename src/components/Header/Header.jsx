@@ -4,34 +4,11 @@ import searchBtn from '../../images/btn-search.png';
 import { Link, useNavigate } from 'react-router-dom';
 import PostRegist from '../../pages/PostRegist';
 import { LiaUserCircleSolid } from 'react-icons/lia';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { collection, getDocs } from 'firebase/firestore';
 import { auth, signOut } from '../../firebase';
-// import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const Header = () => {
-  // const dispatch = useDispatch();
-  // const postsData = useSelector((state) => state.posts);
-  // console.log(postsData);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const initialState = [];
-
-  //     const querySnapshot = await getDocs(collection(db, 'posts'));
-  //     querySnapshot.forEach((doc) => {
-  //       initialState.push({ ...doc.data(), pid: doc.id });
-  //     });
-  //     dispatch({ type: '초기세팅', payload: initialState });
-  //   };
-  //   fetchData();
-  // }, []);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -72,7 +49,7 @@ const Header = () => {
           <img src={searchBtn} alt="검색 이미지" />
         </StSearchBtn>
       </StForm>
-      <StBtns>
+     <StBtns>
         {!isLoggedIn ? (
           <Link to="/login">
             <StButton className="login-btn">Login</StButton>
@@ -172,16 +149,6 @@ const StPostingBtn = styled.button`
   border-radius: 5px;
   background-color: #35c5f0;
 `;
-
-// const StTooltip = styled.div`
-//   position: absolute;
-//   top: 40px;
-//   right: 0;
-//   padding: 10px;
-//   background-color: #f0f0f0;
-//   border: 1px solid #ccc;
-//   border-radius: 5px;
-// `;
 
 const StyledUserIcon = styled(LiaUserCircleSolid)`
   margin-top: 7px;
