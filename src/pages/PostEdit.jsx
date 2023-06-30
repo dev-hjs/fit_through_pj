@@ -13,6 +13,9 @@ const PostEdit = ({ postData, closeModal }) => {
   const [title, setTitle] = useState(postData.title);
   const [tags, setTags] = useState(postData.tags);
   const [content, setConent] = useState(postData.content);
+  const [selectedTag, setSelectedTag] = useState('');
+
+  const postTags = ['#상체운동💪🏼', '#하체운동🏃🏻', '#영양제추천💊', '#식단공유🥗', '#다이어트꿀팁🍯'];
 
   const titleRef = useRef(null);
   // const tagsRef = useRef(null);
@@ -61,23 +64,36 @@ const PostEdit = ({ postData, closeModal }) => {
           />
         </S.InputGroup>
         <S.InputGroup>
-          <S.ModalInput type="text" value={tags} onChange={handleAddTag} />
+          {/* <S.ModalInput type="text" value={tags} onChange={handleAddTag} /> */}
+          <S.TagsDropdown value={tags} onChange={handleAddTag}>
+            <option value="">태그 선택</option>
+            {postTags.map((tag) => (
+              <option
+                key={tag}
+                value={tag}
+                style={{
+                  backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
+                  color: selectedTag === tag ? '#fff' : '#000'
+                }}
+              >
+                {tag}
+              </option>
+            ))}
+          </S.TagsDropdown>
         </S.InputGroup>
         <S.InputGroup>
-
           <S.ReactQuill>
-           <Editor
-            style={{
-              width: '80%',
-              border: '1px solid gray',
-              borderRadius: '5px'
-            }}
-            value={content}
-            onChange={handleAddContent}
-          />
+            <Editor
+              style={{
+                width: '100%',
+                border: '1px solid gray',
+                borderRadius: '5px'
+              }}
+              value={content}
+              onChange={handleAddContent}
+            />
           </S.ReactQuill>
           {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
-
         </S.InputGroup>
         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
       </S.ModalContent>
@@ -144,6 +160,11 @@ const S = {
     flex: 1;
     height: 60px;
     padding: 10px;
+  `,
+  TagsDropdown: styled.select`
+    width: 100%;
+    height: 30px;
+    padding: 5px;
   `,
 
   ReactQuill: styled.div`
