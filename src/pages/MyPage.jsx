@@ -36,6 +36,13 @@ const MyPage = () => {
 
   return (
     <>
+      <input
+        type="file"
+        onChange={(e) => {
+          const event = e.target.value;
+          console.log('event', event);
+        }}
+      />
       <Header />
       <P.MypageBodyWrap>
         <P.FlexWrap>
