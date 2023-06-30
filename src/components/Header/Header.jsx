@@ -126,6 +126,7 @@ const StButton = styled.button`
   background-color: white;
   border: 0px;
   font-size: 16px;
+  cursor: pointer;
 `;
 
 const StPostingBtn = styled.button`

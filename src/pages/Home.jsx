@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import PostDetail from './PostDetail';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const Home = () => {
@@ -14,14 +14,17 @@ const Home = () => {
   const postsData = useSelector((state) => state.posts);
   useEffect(() => {
     const fetchData = async () => {
-      const initialState = [];
+      let initialState = [];
 
       const querySnapshot = await getDocs(collection(db, 'posts'));
-      querySnapshot.forEach((doc) => {
-        initialState.push({ ...doc.data(), pid: doc.id });
-      });
+      initialState = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        pid: doc.id
+      }));
+
       dispatch({ type: '초기세팅', payload: initialState });
     };
+
     fetchData();
   }, []);
 
@@ -46,15 +49,42 @@ const Home = () => {
   const closeDetailModal = () => {
     setIsDetailModalOpen(false);
   };
+
+  const onFilterValueSelected = (filterValue) => {
+    console.log(filterValue);
+  };
   // closeModal();
 
-  // -----------토글 메뉴 만들면 쓸 것?
-  // const Navbar = () => {
-  //   const [isOpen, setNav] = useState(false);
-  //   const toggleNav = () => {
-  //     setNav((isOpen) => !isOpen);
-  //   };
-  // };
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const tagQueries = selectedTags.map((tag) => query(collection(db, 'posts'), where('tag', '==', tag)));
+
+      if (tagQueries.length === 0) {
+        // 선택된 태그가 없는 경우 빈 배열을 초기 값으로 설정합니다.
+        setFilteredPosts([]);
+        return;
+      }
+
+      const compoundQuery = tagQueries.reduce((q1, q2) => q1 || q2);
+      const querySnapshot = await getDocs(compoundQuery);
+      const postsData = querySnapshot.docs.map((doc) => ({ ...doc.data(), pid: doc.id }));
+      setFilteredPosts(postsData);
+    };
+
+    fetchData();
+  }, [selectedTags]);
+
+  const toggleTag = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -70,15 +100,40 @@ const Home = () => {
         {/* <h2>Main</h2> */}
         <div>
           <StCategoryBtn>#전체글🧡</StCategoryBtn>
-          <StCategoryBtn>#상체운동💪🏻</StCategoryBtn>
-          <StCategoryBtn>#하체운동🏃🏻‍</StCategoryBtn>
-          <StCategoryBtn>#영양제추천💊</StCategoryBtn>
-          <StCategoryBtn>#식단공유🥗</StCategoryBtn>
-          <StCategoryBtn>#다이어트꿀팁🍯</StCategoryBtn>
+          <StCategoryBtn
+            className={selectedTags.includes('상체운동') ? 'active' : ''}
+            onClick={() => toggleTag('#상체운동')}
+          >
+            #상체운동💪🏻
+          </StCategoryBtn>
+          <StCategoryBtn
+            className={selectedTags.includes('하체운동') ? 'active' : ''}
+            onClick={() => toggleTag('#하체운동')}
+          >
+            #하체운동🏃🏻‍
+          </StCategoryBtn>
+          <StCategoryBtn
+            className={selectedTags.includes('영양제추천') ? 'active' : ''}
+            onClick={() => toggleTag('#영양제추천')}
+          >
+            #영양제추천💊
+          </StCategoryBtn>
+          <StCategoryBtn
+            className={selectedTags.includes('식단공유') ? 'active' : ''}
+            onClick={() => toggleTag('#식단공유')}
+          >
+            #식단공유🥗
+          </StCategoryBtn>
+          <StCategoryBtn
+            className={selectedTags.includes('다이어트꿀팁') ? 'active' : ''}
+            onClick={() => toggleTag('#다이어트꿀팁')}
+          >
+            #다이어트꿀팁🍯
+          </StCategoryBtn>
         </div>
         <br />
         <StPostList>
-          {postsData.map((post) => (
+          {filteredPosts.map((post) => (
             <>
               <StPostContainer key={post.pid} onClick={() => openDetailModal(post)}>
                 <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
@@ -87,10 +142,7 @@ const Home = () => {
             </>
           ))}
         </StPostList>
-        <br />
-        <div>
-          <button>더보기</button>
-        </div>
+        <StPostList></StPostList>
         <br />
         <StPostList>
           <StPostContainer></StPostContainer>
@@ -117,6 +169,7 @@ const StCategoryBtn = styled.button`
   border: none;
   padding: 3px 10px 5px 10px;
   margin-right: 10px;
+  cursor: pointer;
   &.active {
     background-color: #35c5f0;
   }
