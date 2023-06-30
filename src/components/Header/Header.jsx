@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import searchBtn from '../../images/btn-search.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PostRegist from '../../pages/PostRegist';
 import { LiaUserCircleSolid } from 'react-icons/lia';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { collection, getDocs } from 'firebase/firestore';
-import { auth } from '../../firebase';
+import { auth, signOut } from '../../firebase';
+// import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const Header = () => {
   // const dispatch = useDispatch();
@@ -26,13 +27,38 @@ const Header = () => {
   // }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    if (isLoggedIn) {
+      setIsModalOpen(true);
+    } else {
+      navigate('/login'); // 수정된 부분: 로그인 페이지로 이동하는 경로 '/login'으로 변경
+    }
+  };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    // 인증 상태 변경 감지
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsLoggedIn(user !== null); // 사용자가 로그인한 경우 isLoggedIn을 true로 설정
+    });
+
+    // 컴포넌트 언마운트 시 인증 상태 변경 감지 정리
+    return () => unsubscribe();
+  }, []);
+
+  const onLogOutClick = () => {
+    auth.signOut();
+    navigate('/');
   };
 
   return (
@@ -47,9 +73,15 @@ const Header = () => {
         </StSearchBtn>
       </StForm>
       <StBtns>
-        <Link to="/login">
-          <StButton className="login-btn">로그인</StButton>
-        </Link>
+        {!isLoggedIn ? (
+          <Link to="/login">
+            <StButton className="login-btn">Login</StButton>
+          </Link>
+        ) : (
+          <StButton className="logout-btn" onClick={onLogOutClick}>
+            Logout
+          </StButton>
+        )}
         <StButton>
           <Link to={`/mypage/${auth?.currentUser?.uid}`} className="profile-btn">
             <StyledUserIcon size="30" />
@@ -112,10 +144,12 @@ const StBtns = styled.div`
     text-decoration: none;
     .login-btn {
       display: block;
-      margin-top: 17px;
+      margin-top: 16px;
       margin-right: 0;
     }
-
+    .logout-btn {
+      margin-top: 50px;
+    }
     & button .profile-btn {
       margin-top: 126px;
     }
@@ -126,6 +160,7 @@ const StButton = styled.button`
   background-color: white;
   border: 0px;
   font-size: 16px;
+  cursor: pointer;
 `;
 
 const StPostingBtn = styled.button`
