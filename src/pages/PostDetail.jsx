@@ -41,6 +41,7 @@ const PostDetail = ({ postData, closeModal }) => {
     if (check) {
       const postRef = doc(db, 'posts', postData.pid);
       await deleteDoc(postRef);
+
       window.location.reload();
     }
   };
@@ -50,8 +51,10 @@ const PostDetail = ({ postData, closeModal }) => {
       <S.ModalContainer onClick={closeModal} />
       <S.ModalContent>
         {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
+
         {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
         {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
+
         <div>제목: {postDetails.title}</div>
         <hr />
         <div>{postDetails.tags}</div>

@@ -5,6 +5,7 @@ import { styled } from 'styled-components';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { addDoc, collection } from 'firebase/firestore';
+import Editor from '../components/editor/Editor';
 
 const PostRegist = ({ closeModal }) => {
   const [currentUser, setCurrentUser] = useState('');
@@ -101,20 +102,19 @@ const PostRegist = ({ closeModal }) => {
           </S.TagsDropdown>
         </S.InputGroup>
         <S.InputGroup>
+
           <S.ReactQuill>
-            <ReactQuill
-              placeholder="내용을 입력하세요"
-              style={{
-                width: '100%',
-                border: '1px solid gray',
-                borderRadius: '5px'
-                // paddingTop: '15px'
-              }}
-              value={content}
-              onChange={handleAddContent}
-              modules={modules}
-            />
+            <Editor
+            style={{
+              width: '80%',
+              border: '1px solid gray',
+              borderRadius: '5px'
+            }}
+            value={content}
+            onChange={handleAddContent}
+          />
           </S.ReactQuill>
+
         </S.InputGroup>
         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
       </S.ModalContent>

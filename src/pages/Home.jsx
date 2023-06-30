@@ -142,14 +142,29 @@ const Home = () => {
         </div>
         <br />
         <StPostList>
-          {postsData.map((post) => (
-            <>
-              <StPostContainer key={post.pid} onClick={() => openDetailModal(post)}>
-                <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-                {/* <h3>{post.authorId}</h3> */}
-              </StPostContainer>
-            </>
-          ))}
+          {postsData.map((post) => {
+            const contentHTML = post.content;
+            const parser = new DOMParser();
+            const parsedHTML = parser.parseFromString(contentHTML, 'text/html');
+            let thumbnailURL = '';
+            if (contentHTML.includes('<img src=')) {
+              const imageTag = parsedHTML.querySelector('img');
+              thumbnailURL = imageTag.getAttribute('src');
+            }
+
+            return (
+              <>
+                <StPostContainer key={post.pid} onClick={() => openDetailModal(post)}>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
+                    }}
+                  ></div>
+                  {/* <h3>{post.authorId}</h3> */}
+                </StPostContainer>
+              </>
+            );
+          })}
         </StPostList>
         <StPostList></StPostList>
         <br />
