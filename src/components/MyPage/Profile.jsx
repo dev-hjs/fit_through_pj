@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { auth } from '../../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { auth, storage } from '../../firebase';
+import { getAuth, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 
 const defaultProfileImage =
   'https://firebasestorage.googleapis.com/v0/b/fit-through-41507.appspot.com/o/logo512.png?alt=media&token=d764bd69-9646-49b5-89d7-62953a3f991f'; // Replace with your default image path
 
 const Profile = () => {
+  const imgInputRef = useRef(null);
+  const nameInputRef = useRef(null);
+  const [isShow, setIsShow] = useState(false);
   const [user, setUser] = useState(null);
+  const [nameVal, setNameVal] = useState('닉네임');
+  const auth = getAuth();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log('3', currentUser);
       if (currentUser) {
         setUser(currentUser);
+        setNameVal(currentUser.displayName ?? '');
       } else {
         setUser(null);
       }
@@ -29,11 +37,69 @@ const Profile = () => {
   const email = user.email;
   const photoURL = user.photoURL ? user.photoURL : defaultProfileImage;
   const uid = user.uid;
-
+  const handleInput = () => {
+    imgInputRef.current.click();
+  };
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const filePath = `contents/temp/${Date.now()}`;
+      const fileRef = ref(storage, `imgs/${filePath}`);
+      const snapshot = await uploadBytes(fileRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      await updateProfile(auth.currentUser, {
+        photoURL: url
+      });
+      setUser({ ...user, photoURL: url });
+    } catch (e) {}
+  };
+  const handleName = async (name) => {
+    await updateProfile(auth.currentUser, {
+      displayName: name
+    });
+    setUser({ ...user, displayName: name });
+    setIsShow(!isShow);
+  };
   return (
     <P.MypageProfile>
-      <img src={photoURL} alt="사용자 프로필 이미지" />
-      <P.MypageName>{displayName}</P.MypageName>
+      <img src={photoURL} alt="사용자 프로필 이미지" onClick={handleInput} />
+      <input
+        ref={imgInputRef}
+        style={{ display: 'none' }}
+        type="file"
+        onChange={(e) => {
+          handleImage(e);
+        }}
+      />
+      {isShow ? (
+        <>
+          <input
+            ref={nameInputRef}
+            type="text"
+            value={nameVal}
+            onChange={(e) => {
+              setNameVal(e.target.value);
+            }}
+          />
+          <button
+            onClick={() => {
+              handleName(nameVal);
+            }}
+          >
+            변경
+          </button>
+        </>
+      ) : (
+        <P.MypageName
+          onClick={() => {
+            setIsShow(!isShow);
+            console.log(isShow);
+          }}
+        >
+          {displayName}
+        </P.MypageName>
+      )}
+
       <P.MyEmail>{email}</P.MyEmail>
       <P.MyIntro>{uid}</P.MyIntro>
     </P.MypageProfile>
