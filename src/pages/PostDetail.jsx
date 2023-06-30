@@ -35,6 +35,7 @@ const PostDetail = ({ postData, closeModal }) => {
   const closeEditModal = () => {
     setIsEditModalOpen(false);
   };
+
   const deletePost = async () => {
     const check = window.confirm('정말 삭제하시겠습니까?');
     if (check) {
@@ -50,11 +51,14 @@ const PostDetail = ({ postData, closeModal }) => {
       <S.ModalContainer onClick={closeModal} />
       <S.ModalContent>
         {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
-        {isSame && <button onClick={openEditModal}>수정</button>}
-        {isSame && <button onClick={deletePost}>삭제</button>}
+
+        {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
+        {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
+
         <div>제목: {postDetails.title}</div>
-        <div>태그: {postDetails.tags}</div>
-        <div
+        <hr />
+        <div>{postDetails.tags}</div>
+        <S.ImgContent
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(postDetails.content)
           }}
@@ -99,25 +103,13 @@ const S = {
   `,
 
   ModalButton: styled.button`
-    padding: 10px 20px;
+    padding: 5px 10px;
+    margin-right: 2px;
     background-color: #35c5f0;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  `,
-
-  InputGroup: styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  `,
-
-  InputLabel: styled.label`
-    flex: 0 0 80px;
-    text-align: right;
-    margin-right: 10px;
-    margin-right: 10px;
   `,
 
   ModalInput: styled.input`
@@ -130,5 +122,9 @@ const S = {
     flex: 1;
     height: 60px;
     padding: 10px;
+  `,
+
+  ImgContent: styled.div`
+    padding-top: 50px;
   `
 };

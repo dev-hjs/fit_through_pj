@@ -14,14 +14,18 @@ const PostRegist = ({ closeModal }) => {
   const [content, setConent] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
 
-  const postTags = ['#상체운동', '#하체운동', '#영양제주천', '#식단공유', '#다이어트꿀팁'];
+  const postTags = ['#상체운동💪🏼', '#하체운동🏃🏻', '#영양제주천💊', '#식단공유🥗', '#다이어트꿀팁🍯'];
 
-  const handletagClick = (tag) => {
-    setSelectedTag(tag);
-  };
+  // const handletagClick = (tag) => {
+  //   setSelectedTag((prevTag) => (prevTag === tag ? '' : tag));
+  // };
   // const handleTagSave = () => {
   //   selectedTag()
   // };
+
+  const handleTagChange = (e) => {
+    setSelectedTag(e.target.value);
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -35,15 +39,13 @@ const PostRegist = ({ closeModal }) => {
   const handleAddTitle = (e) => {
     setTitle(e.target.value);
   };
-  const handleAddTag = (e) => {
-    setTags(e.target.value);
-  };
+
   const handleAddContent = (contents) => {
     setConent(contents);
   };
 
   const handleSave = async () => {
-    const post = { authorId: currentUser, title, tags, content };
+    const post = { authorId: currentUser, title, tags: [selectedTag], content };
 
     // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, 'posts');
@@ -52,6 +54,9 @@ const PostRegist = ({ closeModal }) => {
 
     closeModal();
     setSelectedTag('');
+    handleTagChange({ target: { value: '' } });
+
+    window.location.replace('/');
 
     setTitle('');
     setTags('');
@@ -77,24 +82,29 @@ const PostRegist = ({ closeModal }) => {
       <S.ModalContainer onClick={closeModal} />
       <S.ModalContent>
         <S.InputGroup>
-          <S.InputLabel>제목:</S.InputLabel>
-          <S.ModalInput type="text" value={title} onChange={handleAddTitle} />
+          <S.ModalInput placeholder="제목을 입력하세요" type="text" value={title} onChange={handleAddTitle} />
         </S.InputGroup>
         <S.InputGroup>
-          {/* <S.InputLabel>태그:</S.InputLabel>
-          <S.ModalInput type="text" value={tags} onChange={handleAddTag} /> */}
-          {postTags.map((tag) => (
-            <S.TagsButton
-              className={`tag${tag === selectedTag ? 'active' : ''}`}
-              onClick={() => {
-                handletagClick(tag);
-              }}
-            ></S.TagsButton>
-          ))}
+          <S.TagsDropdown value={selectedTag} onChange={handleTagChange}>
+            <option value="">태그 선택</option>
+            {postTags.map((tag) => (
+              <option
+                key={tag}
+                value={tag}
+                style={{
+                  backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
+                  color: selectedTag === tag ? '#fff' : '#000'
+                }}
+              >
+                {tag}
+              </option>
+            ))}
+          </S.TagsDropdown>
         </S.InputGroup>
         <S.InputGroup>
-          <S.InputLabel>내용:</S.InputLabel>
-          <Editor
+
+          <S.ReactQuill>
+            <Editor
             style={{
               width: '80%',
               border: '1px solid gray',
@@ -103,6 +113,8 @@ const PostRegist = ({ closeModal }) => {
             value={content}
             onChange={handleAddContent}
           />
+          </S.ReactQuill>
+
         </S.InputGroup>
         <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
       </S.ModalContent>
@@ -130,7 +142,7 @@ const S = {
     top: 50%;
     left: 50%;
 
-    width: 400px;
+    width: 410px;
     height: 500px;
 
     padding: 40px;
@@ -159,13 +171,6 @@ const S = {
     margin-bottom: 10px;
   `,
 
-  InputLabel: styled.label`
-    flex: 0 0 80px;
-    text-align: right;
-    margin-right: 10px;
-    margin-right: 10px;
-  `,
-
   ModalInput: styled.input`
     flex: 1;
     height: 10px;
@@ -178,11 +183,15 @@ const S = {
     padding: 10px;
   `,
 
-  TagsButton: styled.button`
-    width: 85px;
-    height: 25px;
-    background-color: ${(props) => (props.className.includes('active') ? '#35c5f0' : 'transparent')};
-    color: ${(props) => (props.className.includes('active') ? '#fff' : '#000')};
-    border-radius: 5px;
+  TagsDropdown: styled.select`
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+  `,
+
+  ReactQuill: styled.div`
+    .ql-editor {
+      min-height: 300px;
+    }
   `
 };

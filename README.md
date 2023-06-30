@@ -1,72 +1,43 @@
-# Getting Started with Create React App
+# team_MovieProject
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🖥️ 프로젝트 소개
 
-## Available Scripts
+Firebase API를 이용한 건강 정보 공유 플랫폼 사이트입니다.
 
-In the project directory, you can run:
+## 사이트 주소
 
-### `yarn start`
+https://fit-through.vercel.app
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🕰️ 개발 기간
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 23.06.26 - 23.07.03
 
-### `yarn test`
+### 🧑‍🤝‍🧑 멤버 구성 - 팀명 : 취업시켜조
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 팀원1 : 손형정(팀장) - 마이 페이지 구현(MyPage.jsx)
+- 팀원2 : 서경모 - 게시글 수정 기능 구현 (PostEdit.jsx, PostDelete.js)
+- 팀원3 : 최수아 - 게시글 작성, 게시글 페이지 구현 (Home.jsx)
+- 팀원4 : 이수진 - 상세 페이지에서 홈으로 이동하는 UI 및 기능 구현 (PostRegist.jsx)
+- 팀원5 : 이예지 - 로그인, 회원가입 기능 구현 (Login.jsx, SignUp.css)
 
-### `yarn build`
+//## 🎬 페이지 스크린샷
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### ⚙️ 사용하는 기술
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📌 주요 기능
 
-### `yarn eject`
+#### 홈 페이지
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- 구현 기능 입력
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 상세 페이지
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- 구현 기능 입력
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### 로그인/회원가입 페이지
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-# fit_through_pj
+- Firebase API 사용
+- 사용자 인증 처리
+- 데이터베이스 처리
