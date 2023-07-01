@@ -9,6 +9,7 @@ import { db } from '../firebase';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PostDetail from './PostDetail';
+import Footer from '../components/Footer/Footer';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -198,6 +199,7 @@ const Home = () => {
           })}
         </StPostList>
       </main>
+      <Footer />
     </>
   );
 };
