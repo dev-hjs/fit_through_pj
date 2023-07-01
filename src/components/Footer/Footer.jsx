@@ -7,7 +7,7 @@ const Footer = () => {
     <FooterWrap>
       <FooterContent>
         <br />
-        <FooterTitle>get to know us</FooterTitle>
+        <FooterTitle>-- Get to know us ! --</FooterTitle>
         <LinkContainer>
           <LinkWrapper>
             <Name>손형정</Name>
@@ -63,12 +63,13 @@ const FooterTitle = styled.p`
   font-size: 15px;
   font-weight: bold;
   text-align: center;
+  color: rgb(110, 110, 110);
 `;
 
 const LinkContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 0.8rem;
+  margin-top: 1rem;
 `;
 
 const LinkWrapper = styled.div`
@@ -103,7 +104,7 @@ const FooterText = styled.span`
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `;
 
 export default Footer;

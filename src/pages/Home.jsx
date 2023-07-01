@@ -123,14 +123,7 @@ const Home = () => {
     <>
       <Header />
       {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
-      <main
-        style={{
-          // border: '1px solid black',
-          margin: '10px',
-          padding: '10px',
-          height: '100%'
-        }}
-      >
+      <Main>
         <div>
           <StCategoryBtnAll
             isActive={selectedTag === ''}
@@ -213,7 +206,7 @@ const Home = () => {
             );
           })}
         </StPostList>
-      </main>
+      </Main>
       <Footer />
     </>
   );
@@ -221,6 +214,12 @@ const Home = () => {
 
 export default Home;
 
+const Main = styled.main`
+  margin: 10px;
+  padding: 10px;
+  width: 100%;
+  height: 100vh;
+`;
 // const StHeader = styled.header`
 //   /* border: 1px solid black; */
 //   margin: 10px;
@@ -255,12 +254,30 @@ const StCategoryBtnAll = styled(StCategoryBtn)`
 `;
 
 const StPostContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 260px;
   /* border: 1px solid black; */
   background-color: #fff;
   border-radius: 5px;
+  /* box-sizing: content-box; */
   margin: 5px;
+
+  &:hover::after {
+    content: '상세보기'; /* Text to display */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 0 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 36px;
+    cursor: pointer;
+  }
+
   & div {
     border-radius: 20px;
     width: 100%;
@@ -268,6 +285,7 @@ const StPostContainer = styled.div`
     & img {
       object-fit: cover;
       border-radius: 15px;
+      cursor: pointer;
     }
     & p {
       width: 100%;

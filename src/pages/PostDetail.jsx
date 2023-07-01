@@ -6,6 +6,7 @@ import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 import PostEdit from './PostEdit';
 import { deleteDoc, doc } from 'firebase/firestore';
+import { MdClose } from 'react-icons/md';
 
 const PostDetail = ({ postData, closeModal }) => {
   const posts = useSelector((state) => state.posts);
@@ -28,6 +29,7 @@ const PostDetail = ({ postData, closeModal }) => {
       }
     });
   }, []);
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const openEditModal = () => {
     setIsEditModalOpen(true);
@@ -47,29 +49,37 @@ const PostDetail = ({ postData, closeModal }) => {
     }
   };
 
+  useEffect(() => {
+    document.body.classList.toggle('modal-open');
+  });
+
   return (
     <>
-      <S.ModalContainer onClick={closeModal} />
-      <S.ModalContent>
-        <S.ModalFlex>
-          {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
-          <S.ModalButtonX onClick={closeModal}>X</S.ModalButtonX>
-        </S.ModalFlex>
-        <S.ModalTitleWrap>
-          <S.ModalTitle>제목: {postDetails.title}</S.ModalTitle>
-          <S.PlacedButton>
-            {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
-            {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
-          </S.PlacedButton>
-        </S.ModalTitleWrap>
-        <hr />
-        <div>{postDetails.tags}</div>
-        <S.ImgContent
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(postDetails.content)
-          }}
-        />
-      </S.ModalContent>
+      <S.ModalWrap>
+        <S.ModalContent>
+          <S.ModalFlex>
+            {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
+            <S.ModalButtonX onClick={closeModal}>
+              <MdClose size="25" />
+            </S.ModalButtonX>
+          </S.ModalFlex>
+          <S.ModalTitleWrap>
+            <S.ModalTitle>제목: {postDetails.title}</S.ModalTitle>
+            <S.PlacedButton>
+              {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
+              {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
+            </S.PlacedButton>
+          </S.ModalTitleWrap>
+          <hr />
+          {/* <S.TagName>{postDetails.tags}</S.TagName> */}
+          <S.ImgContent
+            dangerouslySetInnerHTML={{
+              // __html: DOMPurify.sanitize(postDetails.content + `<S.TagName>${postDetails.tags}</S.TagName>`)
+              __html: DOMPurify.sanitize(`<S.TagName>${postDetails.tags}</S.TagName>` + postDetails.content)
+            }}
+          />
+        </S.ModalContent>
+      </S.ModalWrap>
     </>
   );
 };
@@ -77,23 +87,29 @@ const PostDetail = ({ postData, closeModal }) => {
 export default PostDetail;
 
 const S = {
-  ModalContainer: styled.div`
-    background-color: rgba(0, 0, 0, 0.4);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  ModalWrap: styled.div`
     display: flex;
+    -webkit-box-align: center;
     align-items: center;
+    -webkit-box-pack: center;
     justify-content: center;
+    backdrop-filter: saturate(180%) blur(7px);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    text-align: center;
+    word-break: keep-all;
+    position: fixed;
+    z-index: 1300;
+    inset: 0px;
   `,
+  ModalContainer: styled.div``,
 
   ModalContent: styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 770px;
+    max-width: 770px;
+    width: 100%;
     min-height: 500px;
     padding: 40px;
     text-align: center;
@@ -125,7 +141,7 @@ const S = {
     border: none;
     position: absolute;
     top: 7px;
-    right: 5px;
+    right: 0;
   `,
 
   ModalInput: styled.input`
@@ -139,13 +155,21 @@ const S = {
     height: 60px;
     padding: 10px;
   `,
-
+  TagName: styled.div`
+    margin-top: 10px;
+  `,
   ImgContent: styled.div`
     width: 100%;
     padding-top: 50px;
+    max-height: 500px;
+    overflow-y: scroll;
+    p {
+      margin-top: 20px;
+    }
   `,
   ModalTitleWrap: styled.div`
     position: relative;
+    height: 45px;
     z-index: -1;
   `,
   ModalTitle: styled.p`
