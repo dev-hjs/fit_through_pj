@@ -30,6 +30,7 @@ const PostEdit = ({ postData, closeModal }) => {
   const handleAddContent = (contents) => {
     setConent(contents);
   };
+
   const handleSave = async () => {
     const post = {
       authorId: postData.authorId,
@@ -40,7 +41,7 @@ const PostEdit = ({ postData, closeModal }) => {
     await setDoc(doc(db, 'posts', postData.id), post);
     alert('저장완료!');
 
-    window.location.replace(`/mypage/${post.authorId}`);
+    window.location.reload(`/mypage/${post.authorId}`);
 
     setTitle('');
     setTags('');
@@ -117,7 +118,8 @@ const S = {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 770px;
+    max-width: 770px;
+    width: 100%;
     min-height: 500px;
     padding: 40px;
     text-align: center;

@@ -28,7 +28,6 @@ const Header = () => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setIsLoggedIn(user !== null); // 사용자가 로그인한 경우 isLoggedIn을 true로 설정
     });
-
     // 컴포넌트 언마운트 시 인증 상태 변경 감지 정리
     return () => unsubscribe();
   }, []);
@@ -121,7 +120,7 @@ const StBtns = styled.div`
     text-decoration: none;
     .login-btn {
       display: block;
-      margin-top: 16px;
+      margin-top: 10px;
       margin-right: 0;
     }
     .logout-btn {

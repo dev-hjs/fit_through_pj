@@ -6,7 +6,8 @@ const Footer = () => {
   return (
     <FooterWrap>
       <FooterContent>
-        <FooterTitle>get to know us</FooterTitle>
+        <br />
+        <FooterTitle>-- Get to know us ! --</FooterTitle>
         <LinkContainer>
           <LinkWrapper>
             <Name>손형정</Name>
@@ -46,7 +47,7 @@ const Footer = () => {
 };
 
 const FooterWrap = styled.footer`
-  background: #8cd9f0;
+  background: #e6e6e6;
   padding-top: 5px;
   height: 130px;
   display: flex;
@@ -55,19 +56,20 @@ const FooterWrap = styled.footer`
 `;
 
 const FooterContent = styled.div`
-  max-width: 1156px;
+  max-width: 1200px;
 `;
 
 const FooterTitle = styled.p`
   font-size: 15px;
   font-weight: bold;
   text-align: center;
+  color: rgb(110, 110, 110);
 `;
 
 const LinkContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 0.6rem;
+  margin-top: 1rem;
 `;
 
 const LinkWrapper = styled.div`
@@ -102,7 +104,7 @@ const FooterText = styled.span`
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `;
 
 export default Footer;

@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 
 const defaultProfileImage =
-  'https://firebasestorage.googleapis.com/v0/b/fit-through-41507.appspot.com/o/logo512.png?alt=media&token=d764bd69-9646-49b5-89d7-62953a3f991f'; // Replace with your default image path
+  'https://firebasestorage.googleapis.com/v0/b/fit-through-41507.appspot.com/o/profile%2Fprofile.jpg?alt=media&token=777e4edb-083b-4c3e-8f09-d157ebb979e1'; // Replace with your default image path
 
 const Profile = () => {
   const imgInputRef = useRef(null);
@@ -54,12 +54,15 @@ const Profile = () => {
     } catch (e) {}
   };
   const handleName = async (name) => {
-    await updateProfile(auth.currentUser, {
-      displayName: name
-    });
-    setUser({ ...user, displayName: name });
+    if (name !== '닉네임') {
+      await updateProfile(auth.currentUser, {
+        displayName: name
+      });
+      setUser({ ...user, displayName: name });
+    }
     setIsShow(!isShow);
   };
+
   return (
     <P.MypageProfile>
       <img src={photoURL} alt="사용자 프로필 이미지" onClick={handleInput} />
@@ -80,7 +83,9 @@ const Profile = () => {
             onChange={(e) => {
               setNameVal(e.target.value);
             }}
+            placeholder="   닉네임을 입력해주세요."
           />
+
           <button
             onClick={() => {
               handleName(nameVal);
@@ -96,6 +101,7 @@ const Profile = () => {
             console.log(isShow);
           }}
         >
+          <div className="nickname">닉네임</div>
           {displayName}
         </P.MypageName>
       )}
@@ -128,6 +134,13 @@ const P = {
       object-fit: cover;
       border-radius: 50%;
     }
+    button {
+      margin-left: 57px;
+      margin-top: 5px;
+    }
+    input {
+      height: 25px;
+    }
   `,
   MypageName: styled.div`
     margin-top: 24px;
@@ -135,14 +148,22 @@ const P = {
     font-weight: bold;
     text-align: center;
     line-height: 1.15;
-    color: #292929;
+    color: #636363;
     overflow-wrap: break-word;
     word-break: break-all;
+    cursor: pointer;
+    .nickname {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #919090;
+      cursor: pointer;
+    }
   `,
+
   MyEmail: styled.div`
     margin-top: 13px;
     text-align: center;
-    color: #292929;
+    color: #636363;
     overflow-wrap: break-word;
     word-break: break-all;
   `,
@@ -152,7 +173,7 @@ const P = {
     font-weight: 400;
     text-align: center;
     line-height: 19px;
-    color: #828c94;
+    color: #919090;
     overflow-wrap: break-word;
     word-break: break-all;
   `
