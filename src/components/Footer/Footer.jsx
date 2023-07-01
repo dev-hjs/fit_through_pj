@@ -6,6 +6,7 @@ const Footer = () => {
   return (
     <FooterWrap>
       <FooterContent>
+        <br />
         <FooterTitle>get to know us</FooterTitle>
         <LinkContainer>
           <LinkWrapper>
@@ -46,7 +47,7 @@ const Footer = () => {
 };
 
 const FooterWrap = styled.footer`
-  background: #8cd9f0;
+  background: #e6e6e6;
   padding-top: 5px;
   height: 130px;
   display: flex;
@@ -55,7 +56,7 @@ const FooterWrap = styled.footer`
 `;
 
 const FooterContent = styled.div`
-  max-width: 1156px;
+  max-width: 1200px;
 `;
 
 const FooterTitle = styled.p`
@@ -67,7 +68,7 @@ const FooterTitle = styled.p`
 const LinkContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 0.6rem;
+  margin-top: 0.8rem;
 `;
 
 const LinkWrapper = styled.div`
