@@ -49,7 +49,7 @@ const Header = () => {
           <img src={searchBtn} alt="검색 이미지" />
         </StSearchBtn>
       </StForm>
-     <StBtns>
+      <StBtns>
         {!isLoggedIn ? (
           <Link to="/login">
             <StButton className="login-btn">Login</StButton>
