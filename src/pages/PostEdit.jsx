@@ -9,7 +9,7 @@ const PostEdit = ({ postData, closeModal }) => {
   const [title, setTitle] = useState(postData.title);
   const [tags, setTags] = useState(postData.tags);
   const [content, setConent] = useState(postData.content);
-  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedTag, setSelectedTag] = useState(postData.tags[0]);
 
   const postTags = ['#상체운동💪🏼', '#하체운동🏃🏻', '#영양제추천💊', '#식단공유🥗', '#다이어트꿀팁🍯'];
 
@@ -38,7 +38,11 @@ const PostEdit = ({ postData, closeModal }) => {
       tags: [selectedTag],
       content
     };
-    await setDoc(doc(db, 'posts', postData.id), post);
+    console.log(selectedTag);
+    console.log([selectedTag]);
+    console.log(post);
+    const checkPost = await setDoc(doc(db, 'posts', postData.id), post);
+    console.log(checkPost);
     alert('저장완료!');
 
     closeModal();
