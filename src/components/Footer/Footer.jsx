@@ -49,6 +49,7 @@ const Footer = () => {
 const FooterWrap = styled.footer`
   position: relative;
   bottom: 0;
+  margin-top: 50px;
   background: rgb(247, 249, 250);
   padding-top: 5px;
   width: 100%;

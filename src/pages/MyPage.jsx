@@ -123,9 +123,9 @@ export default MyPage;
 
 const P = {
   MypageBodyWrap: styled.div`
-    max-width: 1156px;
+    margin: 0 auto;
+    max-width: 1200px;
     width: 100%;
-    height: 100vh;
   `,
   FlexWrap: styled.div`
     display: flex;
@@ -153,7 +153,8 @@ const P = {
   `,
   MypagePost: styled.section`
     margin-top: 50px;
-    max-width: 700px;
+    position: relative;
+    max-width: 773px;
     width: 100%;
   `,
   PostTitleWrap: styled.div`

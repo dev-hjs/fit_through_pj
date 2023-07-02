@@ -219,7 +219,6 @@ const Main = styled.main`
   padding: 20px 0;
   max-width: 1200px;
   width: 100%;
-  // height: 100vh;
 `;
 // const StHeader = styled.header`
 //   /* border: 1px solid black; */
