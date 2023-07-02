@@ -86,7 +86,6 @@ const PostRegist = ({ closeModal }) => {
           <S.InputGroup>
             <S.ModalInput placeholder="제목을 입력하세요" type="text" value={title} onChange={handleAddTitle} />
           </S.InputGroup>
-
           {/* 태그선택 */}
           <S.InputGroup>
             <S.TagsDropdown value={selectedTag} onChange={handleTagChange}>
