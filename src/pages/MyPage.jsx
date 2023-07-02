@@ -8,13 +8,15 @@ import styled from 'styled-components';
 import Header from '../components/Header/Header';
 import Profile from '../components/MyPage/Profile';
 import PostDetail from './PostDetail';
+import Footer from '../components/Footer/Footer';
 
 const MyPage = () => {
+  const dispatch = useDispatch();
   const [userPosts, setUserPosts] = useState([]);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [postData, setPostData] = useState('');
-
   const openDetailModal = (post) => {
+    console.log(post);
     setPostData(post);
     setIsDetailModalOpen(true);
   };
@@ -23,57 +25,73 @@ const MyPage = () => {
     setIsDetailModalOpen(false);
   };
 
-  useEffect(() => {
-    //   const fetchData = async () => {
-    //     if (!auth) {
-    //       console.log('auth없음');
-    //       window.location.replace(`/`);
-    //     }
-    //     if (!auth.currentUser) {
-    //       console.log('currentUser없음');
-    //       window.location.replace(`/`);
-    //     }
-    //     if (!auth.currentUser.uid) {
-    //       console.log('uid없음');
-    //       window.location.replace(`/`);
-    //     }
-    //     console.log('fetch함수실행');
-    //     const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
-    //     const querySnapshot = await getDocs(q);
-    //     const initialPosts = [];
-    //     querySnapshot.forEach((doc) => {
-    //       initialPosts.push({ id: doc.id, ...doc.data() });
-    //     });
-    //     console.log(initialPosts);
-    //     setUserPosts(initialPosts);
-    //   };
-    //   fetchData();
-    // }, []);
+  // useEffect(() => {
+  //   //   const fetchData = async () => {
+  //   //     if (!auth) {
+  //   //       console.log('auth없음');
+  //   //       window.location.replace(`/`);
+  //   //     }
+  //   //     if (!auth.currentUser) {
+  //   //       console.log('currentUser없음');
+  //   //       window.location.replace(`/`);
+  //   //     }
+  //   //     if (!auth.currentUser.uid) {
+  //   //       console.log('uid없음');
+  //   //       window.location.replace(`/`);
+  //   //     }
+  //   //     console.log('fetch함수실행');
+  //   //     const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
+  //   //     const querySnapshot = await getDocs(q);
+  //   //     const initialPosts = [];
+  //   //     querySnapshot.forEach((doc) => {
+  //   //       initialPosts.push({ id: doc.id, ...doc.data() });
+  //   //     });
+  //   //     console.log(initialPosts);
+  //   //     setUserPosts(initialPosts);
+  //   //   };
+  //   //   fetchData();
+  //   // }, []);
 
-    console.log('useeffect실행됨');
-    if (auth.currentUser) {
-      console.log('auth오류 아님');
-      const fetchData = async () => {
-        console.log('fetch함수실행');
-        const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
-        const querySnapshot = await getDocs(q);
-        const initialPosts = [];
-        querySnapshot.forEach((doc) => {
-          initialPosts.push({ id: doc.id, ...doc.data() });
-        });
-        console.log(initialPosts);
-        setUserPosts(initialPosts);
-      };
-      fetchData();
-    } else {
-      console.log('auth오류');
-    }
-  });
+  //   console.log('useeffect실행됨');
+  //   if (auth.currentUser) {
+  //     console.log('auth오류 아님');
+  //     const fetchData = async () => {
+  //       console.log('fetch함수실행');
+  //       const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
+  //       const querySnapshot = await getDocs(q);
+  //       const initialPosts = [];
+  //       querySnapshot.forEach((doc) => {
+  //         initialPosts.push({ id: doc.id, ...doc.data() });
+  //       });
+  //       console.log(initialPosts);
+  //       setUserPosts(initialPosts);
+  //     };
+  //     fetchData();
+  //   } else {
+  //   }
+  // }, [initialPosts]);
 
   // }, []);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {});
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('auth오류 아님');
+        const fetchData = async () => {
+          console.log('fetch함수실행');
+          const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
+          const querySnapshot = await getDocs(q);
+          const initialPosts = [];
+          querySnapshot.forEach((doc) => {
+            initialPosts.push({ id: doc.id, ...doc.data() });
+          });
+          console.log(initialPosts);
+          dispatch({ type: '초기세팅', payload: initialPosts });
+          setUserPosts(initialPosts);
+        };
+        fetchData();
+      }
+    });
   }, []);
 
   return (
@@ -113,6 +131,7 @@ const MyPage = () => {
         </P.FlexWrap>
       </P.MypageBodyWrap>
       {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
+      <Footer />
     </>
   );
 };
@@ -121,9 +140,9 @@ export default MyPage;
 
 const P = {
   MypageBodyWrap: styled.div`
-    max-width: 1156px;
+    margin: 0 auto;
+    max-width: 1200px;
     width: 100%;
-    height: 100vh;
   `,
   FlexWrap: styled.div`
     display: flex;
@@ -151,7 +170,8 @@ const P = {
   `,
   MypagePost: styled.section`
     margin-top: 50px;
-    max-width: 700px;
+    position: relative;
+    max-width: 773px;
     width: 100%;
   `,
   PostTitleWrap: styled.div`

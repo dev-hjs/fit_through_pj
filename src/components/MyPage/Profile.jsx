@@ -133,6 +133,23 @@ const P = {
       height: 158px;
       object-fit: cover;
       border-radius: 50%;
+      cursor: pointer;
+    }
+    &:hover:after {
+      content: '사진변경'; /* Text to display */
+      position: absolute;
+      top: 28%;
+      left: 50%;
+      /* height: 158px;
+      width: 158px; */
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 0 12px;
+      border-radius: 5px;
+      font-size: 13px;
+      line-height: 36px;
+      cursor: pointer;
     }
     button {
       margin-left: 57px;
@@ -140,6 +157,7 @@ const P = {
     }
     input {
       height: 25px;
+      cursor: pointer;
     }
   `,
   MypageName: styled.div`

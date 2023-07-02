@@ -47,8 +47,12 @@ const Footer = () => {
 };
 
 const FooterWrap = styled.footer`
-  background: #e6e6e6;
+  position: relative;
+  bottom: 0;
+  margin-top: 50px;
+  background: rgb(247, 249, 250);
   padding-top: 5px;
+  width: 100%;
   height: 130px;
   display: flex;
   justify-content: center;
@@ -104,7 +108,7 @@ const FooterText = styled.span`
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
 `;
 
 export default Footer;

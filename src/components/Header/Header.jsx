@@ -9,29 +9,34 @@ import { auth, signOut } from '../../firebase';
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
+  // ---모달 닫기---
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  // ---로그인상태일 경우 모달열고 로그인이 안된 경우 로그인페이지로 이동시키기---
   const openModal = () => {
     if (isLoggedIn) {
       setIsModalOpen(true);
     } else {
-      navigate('/login'); // 수정된 부분: 로그인 페이지로 이동하는 경로 '/login'으로 변경
+      alert('로그인이 필요한 페이지 입니다.');
+      navigate('/login');
     }
   };
 
-  const navigate = useNavigate();
+  // ---인증 상태 변경 감지---
   useEffect(() => {
-    // 인증 상태 변경 감지
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsLoggedIn(user !== null); // 사용자가 로그인한 경우 isLoggedIn을 true로 설정
+      setIsLoggedIn(user !== null);
     });
-    // 컴포넌트 언마운트 시 인증 상태 변경 감지 정리
+    // 사용자가 로그인한 경우 isLoggedIn을 true로 설정
     return () => unsubscribe();
+    // 컴포넌트 언마운트 시 인증 상태 변경 감지 정리
   }, []);
 
+  //---로그아웃 클릭시 사용자 로그아웃 처리 + 홈화면으로 이동---
   const onLogOutClick = () => {
     auth.signOut();
     navigate('/');
@@ -39,9 +44,11 @@ const Header = () => {
 
   return (
     <StHeader>
+      {/* 로고 */}
       <Link to="/">
         <img src="../img/mainlogo.jpg" alt="main logo" />
       </Link>
+      {/* 검색창 */}
       <StForm>
         <StInput type="text" placeholder=" 검색어를 입력하세요 !" />
         <StSearchBtn>
@@ -49,7 +56,9 @@ const Header = () => {
         </StSearchBtn>
       </StForm>
       <StBtns>
+        {/* 로그인버튼 */}
         {!isLoggedIn ? (
+          // = 로그인상태가 참인경우 로그아웃 버튼을 보여줌
           <Link to="/login">
             <StButton className="login-btn">Login</StButton>
           </Link>
@@ -58,13 +67,20 @@ const Header = () => {
             Logout
           </StButton>
         )}
-        <StButton>
+
+        {/* 프로필버튼 */}
+        <StButton onClick={openModal}>
           <Link to={`/mypage/${auth?.currentUser?.uid}`} className="profile-btn">
-            <StyledUserIcon size="30" />
+            {isLoggedIn ? <StyledUserIconBlue size="30" /> : <StyledUserIconGrey size="30" />}
+            {/* 로그인 상태에서 파란아이콘으로, 로그아웃 상태에서는 회색 아이콘으로 바뀜 */}
           </Link>
+
+          {/* 글쓰기버튼 */}
         </StButton>
         <StPostingBtn onClick={openModal}>글쓰기</StPostingBtn>
         {isModalOpen && <PostRegist closeModal={closeModal} />}
+        {/* 모달이 열려있을 경우 게시글등록 컴포넌트를 보여준다는 의미. 
+        closeModal함수를 closeModal prop으로 전달.*/}
       </StBtns>
     </StHeader>
   );
@@ -73,11 +89,12 @@ const Header = () => {
 export default Header;
 
 const StHeader = styled.header`
-  margin: 10px;
-  padding: 10px;
+  margin: 0 auto;
+  padding: 20px 0;
   display: flex;
   justify-content: space-between;
-
+  max-width: 1200px;
+  width: 100%;
   & a > img {
     width: 230px;
   }
@@ -149,9 +166,16 @@ const StPostingBtn = styled.button`
   background-color: #35c5f0;
 `;
 
-const StyledUserIcon = styled(LiaUserCircleSolid)`
+const StyledUserIconGrey = styled(LiaUserCircleSolid)`
   margin-top: 7px;
   margin-right: 7px;
   color: rgb(110, 110, 110);
+  cursor: pointer;
+`;
+
+const StyledUserIconBlue = styled(LiaUserCircleSolid)`
+  margin-top: 7px;
+  margin-right: 7px;
+  color: #35c5f0;
   cursor: pointer;
 `;

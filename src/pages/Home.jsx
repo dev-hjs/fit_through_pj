@@ -19,25 +19,21 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let initialState = [];
+      let initialPosts = [];
 
       const querySnapshot = await getDocs(collection(db, 'posts'));
-      initialState = querySnapshot.docs.map((doc) => ({
+      initialPosts = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
-        pid: doc.id
+        id: doc.id
       }));
 
-      dispatch({ type: '초기세팅', payload: initialState });
+      dispatch({ type: '초기세팅', payload: initialPosts });
     };
 
     fetchData();
   }, []);
 
   useEffect(() => {
-    const filteredData = postsData.filter((post) => {
-      post.tags.includes('하체');
-    });
-    console.log(filteredData);
     setData(postsData);
   }, [postsData]);
 
@@ -200,7 +196,10 @@ const Home = () => {
                       __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
                     }}
                   ></div>
-                  <h3>{post.title}</h3>
+
+                  <h3>
+                    &nbsp;&nbsp;<span>{post.tags}</span> {post.title}
+                  </h3>
                 </StPostContainer>
               </>
             );
@@ -215,10 +214,10 @@ const Home = () => {
 export default Home;
 
 const Main = styled.main`
-  margin: 10px;
-  padding: 10px;
+  margin: 0 auto;
+  padding: 20px 0;
+  max-width: 1200px;
   width: 100%;
-  height: 100vh;
 `;
 // const StHeader = styled.header`
 //   /* border: 1px solid black; */
@@ -255,13 +254,14 @@ const StCategoryBtnAll = styled(StCategoryBtn)`
 
 const StPostContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: 260px;
+  width: 269px;
+  height: 179.33px;
   /* border: 1px solid black; */
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 4px;
   /* box-sizing: content-box; */
-  margin: 5px;
+  margin: 40px auto;
+
 
   &:hover::after {
     content: '상세보기'; /* Text to display */
@@ -279,22 +279,35 @@ const StPostContainer = styled.div`
   }
 
   & div {
-    border-radius: 20px;
+    border-radius: 4px;
     width: 100%;
     height: 100%;
     & img {
       object-fit: cover;
-      border-radius: 15px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    & p {
+    /* & p {
       width: 100%;
       height: 100%;
       & img {
         width: 100%;
         height: 100%;
       }
-    }
+    } */
+  }
+  & h3 {
+    font-size: 16px;
+    height: 48px;
+    width: 269px;
+    margin-top: 10px;
+    word-break: keep-all;
+    line-height: 24px;
+  }
+  & span {
+    color: #30b4dc;
+    font-weight: 600;
+    margin-right: 5px;
   }
 `;
 
@@ -307,7 +320,7 @@ const StPostContainer = styled.div`
 const StPostList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 30px 35px;
+  grid-gap: 0px 20px;
   width: 100%;
   align-items: center;
   & div {
@@ -317,11 +330,6 @@ const StPostList = styled.div`
   }
 `;
 
-// const StSearchBtn = styled.button`
-//   background-color: white;
-//   border: 0px;
-// `;
-
-// const StForm = styled.form`
-//   position: relative;
-// `;
+const StPostTitle = styled.h3`
+  margin-top: 5px;
+`;
