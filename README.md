@@ -15,16 +15,21 @@ http://fit-throught.com
 ### 🧑‍🤝‍🧑 멤버 구성 - 팀명 : 취업시켜조
 
 - 팀원1 : 손형정(팀장) - 마이 페이지 구현(MyPage.jsx)
-- 팀원2 : 서경모 - 게시글 수정 기능 구현 (PostEdit.jsx, PostDelete.js)
+- 팀원2 : 서경모 - 게시글 수정 기능 구현 (PostEdit.jsx)
 - 팀원3 : 최수아 - 게시글 작성, 게시글 페이지 구현 (Home.jsx)
-- 팀원4 : 이수진 - 상세 페이지에서 홈으로 이동하는 UI 및 기능 구현 (PostRegist.jsx)
-- 팀원5 : 이예지 - 로그인, 회원가입 기능 구현 (Login.jsx, SignUp.css)
+- 팀원4 : 이수진 - 상세 페이지에서 홈으로 이동하는 UI 및 기능 구현 (PostRegist.jsx, PostDetail.jsx)
+- 팀원5 : 이예지 - 로그인, 회원가입 기능 구현 (Login.jsx, SignUp.jsx)
 
 //## 🎬 페이지 스크린샷
 
 ### ⚙️ 사용하는 기술
-
+- firebase
 - React
+- styled-components
+- redux
+- DOMPurify
+- react-quill
+- react-router-dom
 
 ## 📌 주요 기능
 
