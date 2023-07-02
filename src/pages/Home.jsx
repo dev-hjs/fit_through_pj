@@ -196,7 +196,10 @@ const Home = () => {
                       __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
                     }}
                   ></div>
-                  <StPostTitle>{post.title}</StPostTitle>
+
+                  <h3>
+                    &nbsp;&nbsp;<span>{post.tags}</span> {post.title}
+                  </h3>
                 </StPostContainer>
               </>
             );
@@ -251,12 +254,14 @@ const StCategoryBtnAll = styled(StCategoryBtn)`
 
 const StPostContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: 260px;
+  width: 269px;
+  height: 179.33px;
   /* border: 1px solid black; */
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 4px;
   /* box-sizing: content-box; */
+  margin: 40px auto;
+
 
   &:hover::after {
     content: '상세보기'; /* Text to display */
@@ -274,22 +279,35 @@ const StPostContainer = styled.div`
   }
 
   & div {
-    border-radius: 20px;
+    border-radius: 4px;
     width: 100%;
     height: 100%;
     & img {
       object-fit: cover;
-      border-radius: 15px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    & p {
+    /* & p {
       width: 100%;
       height: 100%;
       & img {
         width: 100%;
         height: 100%;
       }
-    }
+    } */
+  }
+  & h3 {
+    font-size: 16px;
+    height: 48px;
+    width: 269px;
+    margin-top: 10px;
+    word-break: keep-all;
+    line-height: 24px;
+  }
+  & span {
+    color: #30b4dc;
+    font-weight: 600;
+    margin-right: 5px;
   }
 `;
 
@@ -302,7 +320,7 @@ const StPostContainer = styled.div`
 const StPostList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 40px 35px;
+  grid-gap: 0px 20px;
   width: 100%;
   align-items: center;
   & div {
