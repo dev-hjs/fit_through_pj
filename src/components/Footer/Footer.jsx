@@ -53,7 +53,7 @@ const FooterWrap = styled.footer`
   background: rgb(247, 249, 250);
   padding-top: 5px;
   width: 100%;
-  height: 130px;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,12 +68,14 @@ const FooterTitle = styled.p`
   font-weight: bold;
   text-align: center;
   color: rgb(110, 110, 110);
+  margin-top: 10px;
 `;
 
 const LinkContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 30px;
+  margin-bottom: 20px;
 `;
 
 const LinkWrapper = styled.div`
@@ -81,11 +83,11 @@ const LinkWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 5px;
+  color: #343434;
 `;
 
 const Name = styled.p`
   text-align: center;
-  font-family: 'Single Day', cursive;
   font-weight: bold;
   white-space: nowrap;
   width: 100px;
@@ -108,7 +110,7 @@ const FooterText = styled.span`
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  // margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 export default Footer;

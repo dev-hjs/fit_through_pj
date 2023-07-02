@@ -41,6 +41,8 @@ const PostEdit = ({ postData, closeModal }) => {
     await setDoc(doc(db, 'posts', postData.id), post);
     alert('저장완료!');
 
+    closeModal();
+
     window.location.reload(`/mypage/${post.authorId}`);
 
     setTitle('');

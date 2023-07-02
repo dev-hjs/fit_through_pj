@@ -63,23 +63,10 @@ const PostRegist = ({ closeModal }) => {
     setConent('');
   };
 
-  // const modules = useMemo(() => {
-  //   return {
-  //     toolbar: {
-  //       container: [
-  //         [{ header: [1, 2, 3, false] }],
-  //         ['bold', 'italic', 'underline', 'strike'],
-  //         ['blockquote'],
-  //         [{ list: 'ordered' }, { list: 'bullet' }],
-  //         [{ color: [] }, { background: [] }],
-  //         [{ align: [] }, 'link', 'image']
-  //       ]
-  //     }
-  //   };
-  // }, []);
-
   return (
     <>
+
+
       <S.ModalWrap>
         <S.ModalContainer>
           {/* 모달바깥 클릭시 모달 닫기 */}
@@ -116,6 +103,7 @@ const PostRegist = ({ closeModal }) => {
             <S.InputGroup>
               <S.ReactQuill>
                 <Editor
+
                   style={{
                     width: '100%',
                     border: '1px solid gray',
