@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
@@ -131,12 +131,6 @@ const P = {
   `,
   PostList: styled.div`
     margin-top: 20px;
-    // display: flex;
-    // justify-content: space-between;
-
-    // grid-template-columns: repeat(3, 1fr);
-    // grid-gap: 12px;
-
     img {
       border-radius: 10px;
     }
@@ -148,7 +142,6 @@ const P = {
     img {
       border-radius: 10px;
       width: 100%;
-      // height: 150px;
       object-fit: cover;
     }
   `,

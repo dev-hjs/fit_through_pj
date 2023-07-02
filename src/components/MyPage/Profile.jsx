@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { auth, storage } from '../../firebase';
+import { storage } from '../../firebase';
 import { getAuth, onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 
@@ -36,7 +36,7 @@ const Profile = () => {
   const displayName = user.displayName;
   const email = user.email;
   const photoURL = user.photoURL ? user.photoURL : defaultProfileImage;
-  const uid = user.uid;
+  // const uid = user.uid;
   const handleInput = () => {
     imgInputRef.current.click();
   };
@@ -140,8 +140,6 @@ const P = {
       position: absolute;
       top: 28%;
       left: 50%;
-      /* height: 158px;
-      width: 158px; */
       transform: translate(-50%, -50%);
       background-color: rgba(0, 0, 0, 0.6);
       color: #fff;

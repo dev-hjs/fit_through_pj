@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import PostRegist from './PostRegist';
 import styled from 'styled-components';
-// import { Link } from 'react-router-dom';
 import Header from '../components/Header/Header';
-// import Footer from '../components/Footer/Footer';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PostDetail from './PostDetail';
 import Footer from '../components/Footer/Footer';
@@ -38,16 +34,7 @@ const Home = () => {
     setData(postsData);
   }, [postsData]);
 
-  const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-
-  const openRegistModal = () => {
-    setIsRegistModalOpen(true);
-  };
-
-  const closeRegistModal = () => {
-    setIsRegistModalOpen(false);
-  };
 
   const [postData, setPostData] = useState('');
 
@@ -59,11 +46,6 @@ const Home = () => {
   const closeDetailModal = () => {
     setIsDetailModalOpen(false);
   };
-
-  // const onFilterValueSelected = (filterValue) => {
-  //   console.log(filterValue);
-  // };
-  // closeModal();
 
   const [selectedTags, setSelectedTags] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -204,14 +186,6 @@ const Main = styled.main`
   max-width: 1200px;
   width: 100%;
 `;
-// const StHeader = styled.header`
-//   /* border: 1px solid black; */
-//   margin: 10px;
-//   padding: 10px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-// `;
 
 const StCategoryList = styled.div`
   padding-bottom: 9px;
@@ -245,12 +219,6 @@ const StCategoryBtn = styled.button`
 const StCategoryBtnAll = styled(StCategoryBtn)`
   background-color: #e6e6e6;
 `;
-
-// const StButton = styled.button`
-//   background-color: white;
-//   border: 0px;
-//   /* height: 50px; */
-// `;
 
 const StPostList = styled.div`
   margin-top: 20px;
@@ -289,57 +257,15 @@ const S = {
       filter: brightness(75%);
       transition: 0.3s;
       vertical-align: bottom;
-      /* border-radius: 10px; */
       object-fit: cover;
       padding-top: 15px;
       opacity: 0.85;
     }
     &:hover {
-      /* background: #35c5f0; */
       border: none;
     }
     &:hover img {
       transform: scale(102.5%);
     }
   `
-  // HomeHeaderTit: styled.div`
-  //   position: absolute;
-  //   top: 50%;
-  //   left: 0;
-  //   transform: translateY(-50%);
-  //   padding: 2.5rem;
-  //   color: #fff;
-  //   a {
-  //     background: #35c5f0;
-  //     border: none;
-  //     display: inline-block;
-  //     width: 100px;
-  //     height: 32px;
-  //     text-align: center;
-  //     line-height: 32px;
-  //     border-radius: 5px;
-  //     border: 1px solid #fff;
-  //     font-size: 0.8rem;
-  //     font-weight: 600;
-  //   }
-  //   h4 {
-  //     font-size: 1.4rem;
-  //     padding: 1rem 0;
-  //   }
-  // `,
-  // HomeHeaderLower: styled.div`
-  //   border-bottom: 1px solid #ededed;
-  //   overflow-x: auto;
-  //   overflow-y: hidden;
-  // `,
-  // BannerSlider: styled.ul`
-  //   .banner-slider {
-  //     display: flex;
-  //     flex-flow: row nowrap;
-  //     overflow: hidden;
-  //     width: 400%;
-  //     position: relative;
-  //     /* transition: 0.4s; */
-  //   }
-  // `
 };
