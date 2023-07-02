@@ -57,7 +57,7 @@ const StPostContainer = styled.div`
   &:hover::after {
     content: '상세보기'; /* Text to display */
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.8);
