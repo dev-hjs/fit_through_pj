@@ -19,25 +19,21 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let initialState = [];
+      let initialPosts = [];
 
       const querySnapshot = await getDocs(collection(db, 'posts'));
-      initialState = querySnapshot.docs.map((doc) => ({
+      initialPosts = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
-        pid: doc.id
+        id: doc.id
       }));
 
-      dispatch({ type: '초기세팅', payload: initialState });
+      dispatch({ type: '초기세팅', payload: initialPosts });
     };
 
     fetchData();
   }, []);
 
   useEffect(() => {
-    const filteredData = postsData.filter((post) => {
-      post.tags.includes('하체');
-    });
-    console.log(filteredData);
     setData(postsData);
   }, [postsData]);
 
