@@ -10,11 +10,12 @@ import Profile from '../components/MyPage/Profile';
 import PostDetail from './PostDetail';
 
 const MyPage = () => {
+  const dispatch = useDispatch();
   const [userPosts, setUserPosts] = useState([]);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [postData, setPostData] = useState('');
-
   const openDetailModal = (post) => {
+    console.log(post);
     setPostData(post);
     setIsDetailModalOpen(true);
   };
@@ -23,57 +24,73 @@ const MyPage = () => {
     setIsDetailModalOpen(false);
   };
 
-  useEffect(() => {
-    //   const fetchData = async () => {
-    //     if (!auth) {
-    //       console.log('auth없음');
-    //       window.location.replace(`/`);
-    //     }
-    //     if (!auth.currentUser) {
-    //       console.log('currentUser없음');
-    //       window.location.replace(`/`);
-    //     }
-    //     if (!auth.currentUser.uid) {
-    //       console.log('uid없음');
-    //       window.location.replace(`/`);
-    //     }
-    //     console.log('fetch함수실행');
-    //     const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
-    //     const querySnapshot = await getDocs(q);
-    //     const initialPosts = [];
-    //     querySnapshot.forEach((doc) => {
-    //       initialPosts.push({ id: doc.id, ...doc.data() });
-    //     });
-    //     console.log(initialPosts);
-    //     setUserPosts(initialPosts);
-    //   };
-    //   fetchData();
-    // }, []);
+  // useEffect(() => {
+  //   //   const fetchData = async () => {
+  //   //     if (!auth) {
+  //   //       console.log('auth없음');
+  //   //       window.location.replace(`/`);
+  //   //     }
+  //   //     if (!auth.currentUser) {
+  //   //       console.log('currentUser없음');
+  //   //       window.location.replace(`/`);
+  //   //     }
+  //   //     if (!auth.currentUser.uid) {
+  //   //       console.log('uid없음');
+  //   //       window.location.replace(`/`);
+  //   //     }
+  //   //     console.log('fetch함수실행');
+  //   //     const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
+  //   //     const querySnapshot = await getDocs(q);
+  //   //     const initialPosts = [];
+  //   //     querySnapshot.forEach((doc) => {
+  //   //       initialPosts.push({ id: doc.id, ...doc.data() });
+  //   //     });
+  //   //     console.log(initialPosts);
+  //   //     setUserPosts(initialPosts);
+  //   //   };
+  //   //   fetchData();
+  //   // }, []);
 
-    console.log('useeffect실행됨');
-    if (auth.currentUser) {
-      console.log('auth오류 아님');
-      const fetchData = async () => {
-        console.log('fetch함수실행');
-        const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
-        const querySnapshot = await getDocs(q);
-        const initialPosts = [];
-        querySnapshot.forEach((doc) => {
-          initialPosts.push({ id: doc.id, ...doc.data() });
-        });
-        console.log(initialPosts);
-        setUserPosts(initialPosts);
-      };
-      fetchData();
-    } else {
-      console.log('auth오류');
-    }
-  });
+  //   console.log('useeffect실행됨');
+  //   if (auth.currentUser) {
+  //     console.log('auth오류 아님');
+  //     const fetchData = async () => {
+  //       console.log('fetch함수실행');
+  //       const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
+  //       const querySnapshot = await getDocs(q);
+  //       const initialPosts = [];
+  //       querySnapshot.forEach((doc) => {
+  //         initialPosts.push({ id: doc.id, ...doc.data() });
+  //       });
+  //       console.log(initialPosts);
+  //       setUserPosts(initialPosts);
+  //     };
+  //     fetchData();
+  //   } else {
+  //   }
+  // }, [initialPosts]);
 
   // }, []);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {});
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('auth오류 아님');
+        const fetchData = async () => {
+          console.log('fetch함수실행');
+          const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
+          const querySnapshot = await getDocs(q);
+          const initialPosts = [];
+          querySnapshot.forEach((doc) => {
+            initialPosts.push({ id: doc.id, ...doc.data() });
+          });
+          console.log(initialPosts);
+          dispatch({ type: '초기세팅', payload: initialPosts });
+          setUserPosts(initialPosts);
+        };
+        fetchData();
+      }
+    });
   }, []);
 
   return (
