@@ -267,7 +267,7 @@ const StPostList = styled.div`
 `;
 
 // ------------------------------------------
-// --상단 메인 이미지--
+// --상단 메인 이미지---
 const S = {
   container: styled.div`
     margin: 15px auto 0;
