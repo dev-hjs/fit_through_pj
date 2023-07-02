@@ -78,47 +78,49 @@ const PostRegist = ({ closeModal }) => {
     };
   }, []);
   return (
-    <>
-      <S.ModalContainer onClick={closeModal} />
-      <S.ModalContent>
-        <S.InputGroup>
-          <S.ModalInput placeholder="제목을 입력하세요" type="text" value={title} onChange={handleAddTitle} />
-        </S.InputGroup>
-        <S.InputGroup>
-          <S.TagsDropdown value={selectedTag} onChange={handleTagChange}>
-            <option value="">
-              태그 선택 <small>(필수)</small>
-            </option>
-            {postTags.map((tag) => (
-              <option
-                key={tag}
-                value={tag}
-                style={{
-                  backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
-                  color: selectedTag === tag ? '#fff' : '#000'
-                }}
-              >
-                {tag}
+    <S.Modal>
+      <div class="modal-content">
+        <S.ModalContainer onClick={closeModal} />
+        <S.ModalContent>
+          <S.InputGroup>
+            <S.ModalInput placeholder="제목을 입력하세요" type="text" value={title} onChange={handleAddTitle} />
+          </S.InputGroup>
+          <S.InputGroup>
+            <S.TagsDropdown value={selectedTag} onChange={handleTagChange}>
+              <option value="">
+                태그 선택 <small>(필수)</small>
               </option>
-            ))}
-          </S.TagsDropdown>
-        </S.InputGroup>
-        <S.InputGroup>
-          <S.ReactQuill>
-            <Editor
-              style={{
-                width: '100%',
-                border: '1px solid gray',
-                borderRadius: '5px'
-              }}
-              value={content}
-              onChange={handleAddContent}
-            />
-          </S.ReactQuill>
-        </S.InputGroup>
-        <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
-      </S.ModalContent>
-    </>
+              {postTags.map((tag) => (
+                <option
+                  key={tag}
+                  value={tag}
+                  style={{
+                    backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
+                    color: selectedTag === tag ? '#fff' : '#000'
+                  }}
+                >
+                  {tag}
+                </option>
+              ))}
+            </S.TagsDropdown>
+          </S.InputGroup>
+          <S.InputGroup>
+            <S.ReactQuill>
+              <Editor
+                style={{
+                  width: '100%',
+                  border: '1px solid gray',
+                  borderRadius: '5px'
+                }}
+                value={content}
+                onChange={handleAddContent}
+              />
+            </S.ReactQuill>
+          </S.InputGroup>
+          <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
+        </S.ModalContent>
+      </div>
+    </S.Modal>
   );
 };
 
@@ -141,7 +143,8 @@ const S = {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 770px;
+    max-width: 770px;
+    width: 100%;
     min-height: 500px;
     padding: 40px;
     text-align: center;
@@ -190,6 +193,17 @@ const S = {
   ReactQuill: styled.div`
     .ql-editor {
       min-height: 300px;
+    }
+  `,
+
+  Modal: styled.div`
+    .modal {
+      display: none; /* 모달 숨기기 */
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
     }
   `
 };
