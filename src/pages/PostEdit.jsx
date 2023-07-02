@@ -41,6 +41,8 @@ const PostEdit = ({ postData, closeModal }) => {
     await setDoc(doc(db, 'posts', postData.id), post);
     alert('저장완료!');
 
+    closeModal();
+
     window.location.reload(`/mypage/${post.authorId}`);
 
     setTitle('');
@@ -48,54 +50,73 @@ const PostEdit = ({ postData, closeModal }) => {
     setConent('');
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  useEffect(() => {
+    const bodyElement = document.body;
+    if (isModalOpen) {
+      bodyElement.classList.add('modal-open');
+      bodyElement.style.overflow = 'hidden';
+    } else {
+      bodyElement.classList.remove('modal-open');
+      bodyElement.style.overflow = 'auto';
+    }
+
+    return () => {
+      bodyElement.style.overflow = 'auto';
+    };
+  }, [isModalOpen]);
+
   return (
     <>
-      <S.ModalContainer onClick={closeModal}>
-        <S.ModalContent>
-          <S.InputGroup>
-            <S.ModalInput
-              placeholder="제목을 입력해주세요"
-              ref={titleRef}
-              type="text"
-              value={title}
-              onChange={handleAddTitle}
-            />
-          </S.InputGroup>
-          <S.InputGroup>
-            {/* <S.ModalInput type="text" value={tags} onChange={handleAddTag} /> */}
-            <S.TagsDropdown value={tags} onChange={handleAddTag}>
-              <option value="">태그 선택</option>
-              {postTags.map((tag) => (
-                <option
-                  key={tag}
-                  value={tag}
-                  style={{
-                    backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
-                    color: selectedTag === tag ? '#fff' : '#000'
-                  }}
-                >
-                  {tag}
-                </option>
-              ))}
-            </S.TagsDropdown>
-          </S.InputGroup>
-          <S.InputGroup>
-            <S.ReactQuill>
-              <Editor
-                style={{
-                  width: '100%',
-                  border: '1px solid gray',
-                  borderRadius: '5px'
-                }}
-                value={content}
-                onChange={handleAddContent}
+      {isModalOpen && (
+        <S.ModalContainer>
+          <S.ModalContent>
+            <S.InputGroup>
+              <S.ModalInput
+                placeholder="제목을 입력해주세요"
+                ref={titleRef}
+                type="text"
+                value={title}
+                onChange={handleAddTitle}
               />
-            </S.ReactQuill>
-            {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
-          </S.InputGroup>
-          <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
-        </S.ModalContent>
-      </S.ModalContainer>
+            </S.InputGroup>
+            <S.InputGroup>
+              {/* <S.ModalInput type="text" value={tags} onChange={handleAddTag} /> */}
+              <S.TagsDropdown value={tags} onChange={handleAddTag}>
+                <option value="">태그 선택</option>
+                {postTags.map((tag) => (
+                  <option
+                    key={tag}
+                    value={tag}
+                    style={{
+                      backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
+                      color: selectedTag === tag ? '#fff' : '#000'
+                    }}
+                  >
+                    {tag}
+                  </option>
+                ))}
+              </S.TagsDropdown>
+            </S.InputGroup>
+            <S.InputGroup>
+              <S.ReactQuill>
+                <Editor
+                  style={{
+                    width: '100%',
+                    border: '1px solid gray',
+                    borderRadius: '5px'
+                  }}
+                  value={content}
+                  onChange={handleAddContent}
+                />
+              </S.ReactQuill>
+              {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
+            </S.InputGroup>
+            <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
+          </S.ModalContent>
+        </S.ModalContainer>
+      )}
     </>
   );
 };
@@ -169,6 +190,7 @@ const S = {
   ReactQuill: styled.div`
     .ql-editor {
       min-height: 300px;
+      max-height: 500px;
     }
   `
 };

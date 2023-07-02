@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { addDoc, collection } from 'firebase/firestore';
 import Editor from '../components/editor/Editor';
+import { MdClose } from 'react-icons/md';
 
 const PostRegist = ({ closeModal }) => {
   const [currentUser, setCurrentUser] = useState('');
@@ -62,65 +63,61 @@ const PostRegist = ({ closeModal }) => {
     setConent('');
   };
 
-  // const modules = useMemo(() => {
-  //   return {
-  //     toolbar: {
-  //       container: [
-  //         [{ header: [1, 2, 3, false] }],
-  //         ['bold', 'italic', 'underline', 'strike'],
-  //         ['blockquote'],
-  //         [{ list: 'ordered' }, { list: 'bullet' }],
-  //         [{ color: [] }, { background: [] }],
-  //         [{ align: [] }, 'link', 'image']
-  //       ]
-  //     }
-  //   };
-  // }, []);
-
   return (
     <>
-      <S.ModalContainer onClick={closeModal}>
-        {/* 모달바깥 클릭시 모달 닫기 */}
-        <S.ModalContent>
-          {/* 제목입력란 */}
-          <S.InputGroup>
-            <S.ModalInput placeholder="제목을 입력하세요" type="text" value={title} onChange={handleAddTitle} />
-          </S.InputGroup>
 
-          {/* 태그선택 */}
-          <S.InputGroup>
-            <S.TagsDropdown value={selectedTag} onChange={handleTagChange}>
-              <option value="">태그 선택 (필수)</option>
-              {postTags.map((tag) => (
-                <option
-                  key={tag}
-                  value={tag}
+
+      <S.ModalWrap>
+        <S.ModalContainer>
+          {/* 모달바깥 클릭시 모달 닫기 */}
+          <S.ModalContent>
+            <S.ModalFlex>
+              <S.ModalButtonX onClick={closeModal}>
+                <MdClose size="25" />
+              </S.ModalButtonX>
+            </S.ModalFlex>
+
+            {/* 제목입력란 */}
+            <S.InputGroup>
+              <S.ModalInput placeholder="제목을 입력하세요" type="text" value={title} onChange={handleAddTitle} />
+            </S.InputGroup>
+
+            {/* 태그선택 */}
+            <S.InputGroup>
+              <S.TagsDropdown value={selectedTag} onChange={handleTagChange}>
+                <option value="">태그 선택 (필수)</option>
+                {postTags.map((tag) => (
+                  <option
+                    key={tag}
+                    value={tag}
+                    style={{
+                      backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
+                      color: selectedTag === tag ? '#fff' : '#000'
+                    }}
+                  >
+                    {tag}
+                  </option>
+                ))}
+              </S.TagsDropdown>
+            </S.InputGroup>
+            <S.InputGroup>
+              <S.ReactQuill>
+                <Editor
+
                   style={{
-                    backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
-                    color: selectedTag === tag ? '#fff' : '#000'
+                    width: '100%',
+                    border: '1px solid gray',
+                    borderRadius: '5px'
                   }}
-                >
-                  {tag}
-                </option>
-              ))}
-            </S.TagsDropdown>
-          </S.InputGroup>
-          <S.InputGroup>
-            <S.ReactQuill>
-              <Editor
-                style={{
-                  width: '100%',
-                  border: '1px solid gray',
-                  borderRadius: '5px'
-                }}
-                value={content}
-                onChange={handleAddContent}
-              />
-            </S.ReactQuill>
-          </S.InputGroup>
-          <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
-        </S.ModalContent>
-      </S.ModalContainer>
+                  value={content}
+                  onChange={handleAddContent}
+                />
+              </S.ReactQuill>
+            </S.InputGroup>
+            <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
+          </S.ModalContent>
+        </S.ModalContainer>
+      </S.ModalWrap>
     </>
   );
 };
@@ -128,23 +125,30 @@ const PostRegist = ({ closeModal }) => {
 export default PostRegist;
 
 const S = {
-  ModalContainer: styled.div`
-    background-color: rgba(0, 0, 0, 0.4);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  ModalWrap: styled.div`
     display: flex;
+    -webkit-box-align: center;
     align-items: center;
+    -webkit-box-pack: center;
     justify-content: center;
+    backdrop-filter: saturate(180%) blur(7px);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    text-align: center;
+    word-break: keep-all;
+    position: fixed;
+    z-index: 1300;
+    inset: 0px;
   `,
+
+  ModalContainer: styled.div``,
 
   ModalContent: styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 770px;
+    max-width: 770px;
+    width: 100%;
     min-height: 500px;
     padding: 40px;
     text-align: center;
@@ -152,6 +156,12 @@ const S = {
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
     transform: translateX(-50%) translateY(-50%);
+  `,
+
+  ModalFlex: styled.div`
+    display: flex;
+    justify-content: end;
+    align-items: baseline;
   `,
 
   ModalButton: styled.button`
@@ -162,6 +172,16 @@ const S = {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+  `,
+
+  ModalButtonX: styled.button`
+    background-color: #fff;
+    font-size: 20px;
+    color: #63605f;
+    border: none;
+    position: relative;
+    top: -30px;
+    right: -35px;
   `,
 
   InputGroup: styled.div`
@@ -193,6 +213,7 @@ const S = {
   ReactQuill: styled.div`
     .ql-editor {
       min-height: 300px;
+      max-height: 500px;
     }
   `,
 

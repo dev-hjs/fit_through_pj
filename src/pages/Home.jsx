@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PostDetail from './PostDetail';
 import Footer from '../components/Footer/Footer';
+import Thumbnail from '../components/Thumbnail';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -120,7 +121,17 @@ const Home = () => {
       <Header />
       {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
       <Main>
-        <div>
+        {/* ------상단 메인 이미지 영역------ */}
+        <S.container className="container">
+          <S.HomeHeaderUpper className="home-header__upper">
+            <div>
+              <img src="https://ifh.cc/g/avF6M3.jpg" alt="홈페이지 메인 이미지" />
+            </div>
+          </S.HomeHeaderUpper>
+        </S.container>
+        <br />
+        {/* ------카테고리 영역------ */}
+        <StCategoryList>
           <StCategoryBtnAll
             isActive={selectedTag === ''}
             onClick={() => {
@@ -175,35 +186,9 @@ const Home = () => {
           >
             #다이어트꿀팁🍯
           </StCategoryBtn>
-        </div>
-        <br />
+        </StCategoryList>
         <StPostList>
-          {data.map((post) => {
-            const contentHTML = post.content;
-            const parser = new DOMParser();
-            const parsedHTML = parser.parseFromString(contentHTML, 'text/html');
-            let thumbnailURL = '';
-            if (contentHTML.includes('<img src=')) {
-              const imageTag = parsedHTML.querySelector('img');
-              thumbnailURL = imageTag.getAttribute('src');
-            }
-
-            return (
-              <>
-                <StPostContainer key={post.pid} onClick={() => openDetailModal(post)}>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
-                    }}
-                  ></div>
-
-                  <h3>
-                    &nbsp;&nbsp;<span>{post.tags}</span> {post.title}
-                  </h3>
-                </StPostContainer>
-              </>
-            );
-          })}
+          <Thumbnail postsArr={data} openDetailModal={openDetailModal} area={'Home'} />
         </StPostList>
       </Main>
       <Footer />
@@ -215,7 +200,7 @@ export default Home;
 
 const Main = styled.main`
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 15px 0;
   max-width: 1200px;
   width: 100%;
 `;
@@ -228,8 +213,14 @@ const Main = styled.main`
 //   justify-content: space-between;
 // `;
 
+const StCategoryList = styled.div`
+  padding-bottom: 9px;
+  border-top: 2px solid #ababab;
+  border-bottom: 2px solid #ababab;
+`;
 const StCategoryBtn = styled.button`
   background-color: ${(props) => (props.isActive ? '#35c5f0' : '#fff')};
+  color: #343434;
   height: 40px;
   border-radius: 10px;
   font-weight: bold;
@@ -238,6 +229,9 @@ const StCategoryBtn = styled.button`
   border: none;
   padding: 3px 10px 5px 10px;
   margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
   cursor: pointer;
   &:not(:first-child) {
     background-color: ${(props) => (props.isActive ? '#35c5f0' : '#fff')};
@@ -252,65 +246,6 @@ const StCategoryBtnAll = styled(StCategoryBtn)`
   background-color: #e6e6e6;
 `;
 
-const StPostContainer = styled.div`
-  position: relative;
-  width: 269px;
-  height: 179.33px;
-  /* border: 1px solid black; */
-  background-color: #fff;
-  border-radius: 4px;
-  /* box-sizing: content-box; */
-  margin: 40px auto;
-
-
-  &:hover::after {
-    content: '상세보기'; /* Text to display */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 0 12px;
-    border-radius: 5px;
-    font-size: 16px;
-    line-height: 36px;
-    cursor: pointer;
-  }
-
-  & div {
-    border-radius: 4px;
-    width: 100%;
-    height: 100%;
-    & img {
-      object-fit: cover;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    /* & p {
-      width: 100%;
-      height: 100%;
-      & img {
-        width: 100%;
-        height: 100%;
-      }
-    } */
-  }
-  & h3 {
-    font-size: 16px;
-    height: 48px;
-    width: 269px;
-    margin-top: 10px;
-    word-break: keep-all;
-    line-height: 24px;
-  }
-  & span {
-    color: #30b4dc;
-    font-weight: 600;
-    margin-right: 5px;
-  }
-`;
-
 // const StButton = styled.button`
 //   background-color: white;
 //   border: 0px;
@@ -318,9 +253,10 @@ const StPostContainer = styled.div`
 // `;
 
 const StPostList = styled.div`
+  margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 0px 20px;
+  grid-gap: 40px 20px;
   width: 100%;
   align-items: center;
   & div {
@@ -330,6 +266,80 @@ const StPostList = styled.div`
   }
 `;
 
-const StPostTitle = styled.h3`
-  margin-top: 5px;
-`;
+// ------------------------------------------
+// --상단 메인 이미지---
+const S = {
+  container: styled.div`
+    margin: 15px auto 0;
+    border-top: 2px solid #ababab;
+
+    width: 100%;
+    padding: 0;
+  `,
+  HomeHeaderUpper: styled.div`
+    .home-header__upper {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    img {
+      max-width: 1200px;
+      width: 100%;
+      height: 600px;
+      filter: brightness(75%);
+      transition: 0.3s;
+      vertical-align: bottom;
+      /* border-radius: 10px; */
+      object-fit: cover;
+      padding-top: 15px;
+      opacity: 0.85;
+    }
+    &:hover {
+      /* background: #35c5f0; */
+      border: none;
+    }
+    &:hover img {
+      transform: scale(102.5%);
+    }
+  `
+  // HomeHeaderTit: styled.div`
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 0;
+  //   transform: translateY(-50%);
+  //   padding: 2.5rem;
+  //   color: #fff;
+  //   a {
+  //     background: #35c5f0;
+  //     border: none;
+  //     display: inline-block;
+  //     width: 100px;
+  //     height: 32px;
+  //     text-align: center;
+  //     line-height: 32px;
+  //     border-radius: 5px;
+  //     border: 1px solid #fff;
+  //     font-size: 0.8rem;
+  //     font-weight: 600;
+  //   }
+  //   h4 {
+  //     font-size: 1.4rem;
+  //     padding: 1rem 0;
+  //   }
+  // `,
+  // HomeHeaderLower: styled.div`
+  //   border-bottom: 1px solid #ededed;
+  //   overflow-x: auto;
+  //   overflow-y: hidden;
+  // `,
+  // BannerSlider: styled.ul`
+  //   .banner-slider {
+  //     display: flex;
+  //     flex-flow: row nowrap;
+  //     overflow: hidden;
+  //     width: 400%;
+  //     position: relative;
+  //     /* transition: 0.4s; */
+  //   }
+  // `
+};

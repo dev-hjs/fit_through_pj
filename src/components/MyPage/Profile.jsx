@@ -107,7 +107,7 @@ const Profile = () => {
       )}
 
       <P.MyEmail>{email}</P.MyEmail>
-      <P.MyIntro>{uid}</P.MyIntro>
+      <P.MyIntro>{displayName}님의 마이페이지 입니다.</P.MyIntro>
     </P.MypageProfile>
   );
 };
