@@ -29,18 +29,6 @@ const Login = () => {
     }
   };
 
-  // const signUp = async (event) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  //     console.log('user', userCredential.user);
-  //   } catch (error) {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     console.log('error with signUp', errorCode, errorMessage);
-  //   }
-  // };
   const signIn = async (event) => {
     event.preventDefault();
 
@@ -66,10 +54,6 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-  // const logOut = async (event) => {
-  //   event.preventDefault();
-  //   await signOut(auth);
-  // };
 
   return (
     <L.LoginPage>
@@ -83,12 +67,10 @@ const Login = () => {
             alt="main logo"
           />
         </Link>
-        {/* <img src={process.env.PUBLIC_URL + '..logo.png'} alt="fit_through 로고" /> */}
         <L.Title>LOG IN</L.Title>
         <L.WrapperBox>
           <L.Box type="email" value={email} name="email" onChange={onChange} placeholder="Email address" required />
           <L.Box type="password" value={password} name="password" onChange={onChange} placeholder="Password" required />
-          {/* <button onClick={signUp}>회원가입</button> */}
           <L.LoginBtn onClick={signIn} disabled={isLoading}>
             Sign In
           </L.LoginBtn>

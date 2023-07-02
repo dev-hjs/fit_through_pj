@@ -4,7 +4,7 @@ import searchBtn from '../../images/btn-search.png';
 import { Link, useNavigate } from 'react-router-dom';
 import PostRegist from '../../pages/PostRegist';
 import { LiaUserCircleSolid } from 'react-icons/lia';
-import { auth, signOut } from '../../firebase';
+import { auth } from '../../firebase';
 
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -95,7 +95,6 @@ const StHeader = styled.header`
   justify-content: space-between;
   max-width: 1200px;
   width: 100%;
-  /* border-bottom: 2px solid #ababab; */
   & a > img {
     width: 230px;
   }
