@@ -12,9 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      console.log('user', user);
-    });
+    onAuthStateChanged(auth, (user) => {});
   }, []);
 
   const onChange = (event) => {
@@ -127,7 +125,6 @@ const L = {
     font-size: 18px;
     font-weight: bold;
   `,
-
   WrapperBox: styled.form`
     margin-top: 20px;
     border: none;

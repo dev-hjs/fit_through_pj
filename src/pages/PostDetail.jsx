@@ -26,7 +26,6 @@ const PostDetail = ({ postData, closeModal }) => {
           setIsSame(true);
         }
       } else {
-        console.log('로그인x');
       }
     });
   }, []);
@@ -42,10 +41,8 @@ const PostDetail = ({ postData, closeModal }) => {
   const deletePost = async () => {
     const check = window.confirm('정말 삭제하시겠습니까?');
     if (check) {
-      console.log(postData);
       const postRef = doc(db, 'posts', postData.id);
       await deleteDoc(postRef);
-
       window.location.reload();
     }
   };
@@ -114,6 +111,7 @@ const S = {
     z-index: 1300;
     inset: 0px;
   `,
+
   ModalContainer: styled.div``,
 
   ModalContent: styled.div`
@@ -130,11 +128,13 @@ const S = {
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
     transform: translateX(-50%) translateY(-50%);
   `,
+
   ModalFlex: styled.div`
     display: flex;
     justify-content: end;
     align-items: baseline;
   `,
+
   ModalButton: styled.button`
     margin-left: 5px;
     padding: 5px 10px;
@@ -146,6 +146,7 @@ const S = {
     border-radius: 5px;
     cursor: pointer;
   `,
+
   ModalButtonX: styled.button`
     background-color: #fff;
     font-size: 20px;
@@ -167,9 +168,11 @@ const S = {
     height: 60px;
     padding: 10px;
   `,
+
   TagName: styled.div`
     margin-top: 10px;
   `,
+
   ImgContent: styled.div`
     width: 100%;
     padding-top: 50px;
@@ -179,15 +182,18 @@ const S = {
       margin-top: 20px;
     }
   `,
+
   ModalTitleWrap: styled.div`
     position: relative;
     height: 45px;
     z-index: -1;
   `,
+
   ModalTitle: styled.p`
     position: absolute;
     font-size: 30px;
   `,
+
   PlacedButton: styled.span`
     display: flex;
     justify-content: flex-end;

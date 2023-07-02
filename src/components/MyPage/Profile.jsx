@@ -17,7 +17,6 @@ const Profile = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log('3', currentUser);
       if (currentUser) {
         setUser(currentUser);
         setNameVal(currentUser.displayName ?? '');
@@ -98,7 +97,6 @@ const Profile = () => {
         <P.MypageName
           onClick={() => {
             setIsShow(!isShow);
-            console.log(isShow);
           }}
         >
           <div className="nickname">닉네임</div>
