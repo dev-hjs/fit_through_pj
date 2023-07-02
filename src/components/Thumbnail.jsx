@@ -47,11 +47,8 @@ export default Thumbnail;
 const StPostContainer = styled.div`
   position: relative;
   width: 269px;
-  // height: 179.33px;
-  /* border: 1px solid black; */
   background-color: #fff;
   border-radius: 4px;
-  /* box-sizing: content-box; */
   margin: 0px auto;
 
   &:hover::after {
@@ -78,14 +75,6 @@ const StPostContainer = styled.div`
       border-radius: 4px;
       cursor: pointer;
     }
-    /* & p {
-      width: 100%;
-      height: 100%;
-      & img {
-        width: 100%;
-        height: 100%;
-      }
-    } */
   }
   & h3 {
     font-size: 16px;
@@ -107,8 +96,6 @@ const ImgList = styled.div`
   grid-gap: 15px 35px;
   width: 100%;
   height: 216px;
-  /* margin-top: 10px; */
-  // padding-bottom: 100%;
   position: relative;
   cursor: pointer;
   & div > img {

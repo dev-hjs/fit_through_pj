@@ -9,6 +9,7 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { MdClose } from 'react-icons/md';
 
 const PostDetail = ({ postData, closeModal }) => {
+  const isModalOpen = true;
   const posts = useSelector((state) => state.posts);
   const postDetails = posts.filter((post) => {
     if (post.authorId === postData.authorId && post.content === postData.content) {
@@ -49,8 +50,6 @@ const PostDetail = ({ postData, closeModal }) => {
     }
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
-
   useEffect(() => {
     const bodyElement = document.body;
     if (isModalOpen) {
@@ -85,10 +84,8 @@ const PostDetail = ({ postData, closeModal }) => {
               </S.PlacedButton>
             </S.ModalTitleWrap>
             <hr />
-            {/* <S.TagName>{postDetails.tags}</S.TagName> */}
             <S.ImgContent
               dangerouslySetInnerHTML={{
-                // __html: DOMPurify.sanitize(postDetails.content + `<S.TagName>${postDetails.tags}</S.TagName>`)
                 __html: DOMPurify.sanitize(`<S.TagName>${postDetails.tags}</S.TagName>` + postDetails.content)
               }}
             />

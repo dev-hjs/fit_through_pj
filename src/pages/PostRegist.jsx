@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { styled } from 'styled-components';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { addDoc, collection } from 'firebase/firestore';
 import Editor from '../components/editor/Editor';
@@ -65,8 +64,6 @@ const PostRegist = ({ closeModal }) => {
 
   return (
     <>
-
-
       <S.ModalWrap>
         <S.ModalContainer>
           {/* 모달바깥 클릭시 모달 닫기 */}
@@ -103,7 +100,6 @@ const PostRegist = ({ closeModal }) => {
             <S.InputGroup>
               <S.ReactQuill>
                 <Editor
-
                   style={{
                     width: '100%',
                     border: '1px solid gray',

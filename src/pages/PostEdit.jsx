@@ -6,15 +6,15 @@ import { doc, setDoc } from 'firebase/firestore';
 import Editor from '../components/editor/Editor';
 
 const PostEdit = ({ postData, closeModal }) => {
+  const isModalOpen = true;
   const [title, setTitle] = useState(postData.title);
   const [tags, setTags] = useState(postData.tags);
   const [content, setConent] = useState(postData.content);
-  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedTag, setSelectedTag] = useState(postData.tags[0]);
 
   const postTags = ['#상체운동💪🏼', '#하체운동🏃🏻', '#영양제추천💊', '#식단공유🥗', '#다이어트꿀팁🍯'];
 
   const titleRef = useRef(null);
-  // const tagsRef = useRef(null);
 
   useEffect(() => {
     titleRef.current.focus();
@@ -38,7 +38,9 @@ const PostEdit = ({ postData, closeModal }) => {
       tags: [selectedTag],
       content
     };
+
     await setDoc(doc(db, 'posts', postData.id), post);
+
     alert('저장완료!');
 
     closeModal();
@@ -49,8 +51,6 @@ const PostEdit = ({ postData, closeModal }) => {
     setTags('');
     setConent('');
   };
-
-  const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(() => {
     const bodyElement = document.body;
@@ -82,7 +82,6 @@ const PostEdit = ({ postData, closeModal }) => {
               />
             </S.InputGroup>
             <S.InputGroup>
-              {/* <S.ModalInput type="text" value={tags} onChange={handleAddTag} /> */}
               <S.TagsDropdown value={tags} onChange={handleAddTag}>
                 <option value="">태그 선택</option>
                 {postTags.map((tag) => (
@@ -111,7 +110,6 @@ const PostEdit = ({ postData, closeModal }) => {
                   onChange={handleAddContent}
                 />
               </S.ReactQuill>
-              {/* <S.ModalInputContent type="text" value={content} onChange={handleAddContent} /> */}
             </S.InputGroup>
             <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
           </S.ModalContent>
@@ -161,8 +159,6 @@ const S = {
   `,
 
   InputGroup: styled.div`
-    // display: flex;
-    // align-items: center;
     margin-bottom: 10px;
   `,
 

@@ -13,9 +13,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      console.log('user', user);
-    });
+    onAuthStateChanged(auth, (user) => {});
   }, []);
 
   const onChange = (event) => {
@@ -75,21 +73,6 @@ const SignUp = () => {
       setIsLoading(false);
     }
   };
-  // const signIn = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-  //     alert('user with signIn', userCredential.user);
-  //   } catch (error) {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     console.log('error with signIn', errorCode, errorMessage);
-  //   }
-  // };
-  // const logOut = async (event) => {
-  //   event.preventDefault();
-  //   await signOut(auth);
-  // };
 
   return (
     <L.LoginPage>
@@ -121,8 +104,6 @@ const SignUp = () => {
           <Link to="/login">
             <L.HomeBtn>Log In</L.HomeBtn>
           </Link>
-          {/* <button onClick={signIn}>로그인</button> */}
-          {/* <button onClick={logOut}>로그아웃</button> */}
         </L.WrapperBox>
       </L.LoginContent>
     </L.LoginPage>
