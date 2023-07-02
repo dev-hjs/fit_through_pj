@@ -49,37 +49,52 @@ const PostDetail = ({ postData, closeModal }) => {
     }
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
   useEffect(() => {
-    document.body.classList.toggle('modal-open');
-  });
+    const bodyElement = document.body;
+    if (isModalOpen) {
+      bodyElement.classList.add('modal-open');
+      bodyElement.style.overflow = 'hidden';
+    } else {
+      bodyElement.classList.remove('modal-open');
+      bodyElement.style.overflow = 'auto';
+    }
+
+    return () => {
+      bodyElement.style.overflow = 'auto';
+    };
+  }, [isModalOpen]);
 
   return (
     <>
-      <S.ModalWrap>
-        <S.ModalContent>
-          <S.ModalFlex>
-            {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
-            <S.ModalButtonX onClick={closeModal}>
-              <MdClose size="25" />
-            </S.ModalButtonX>
-          </S.ModalFlex>
-          <S.ModalTitleWrap>
-            <S.ModalTitle>제목: {postDetails.title}</S.ModalTitle>
-            <S.PlacedButton>
-              {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
-              {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
-            </S.PlacedButton>
-          </S.ModalTitleWrap>
-          <hr />
-          {/* <S.TagName>{postDetails.tags}</S.TagName> */}
-          <S.ImgContent
-            dangerouslySetInnerHTML={{
-              // __html: DOMPurify.sanitize(postDetails.content + `<S.TagName>${postDetails.tags}</S.TagName>`)
-              __html: DOMPurify.sanitize(`<S.TagName>${postDetails.tags}</S.TagName>` + postDetails.content)
-            }}
-          />
-        </S.ModalContent>
-      </S.ModalWrap>
+      {isModalOpen && (
+        <S.ModalWrap>
+          <S.ModalContent>
+            <S.ModalFlex>
+              {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
+              <S.ModalButtonX onClick={closeModal}>
+                <MdClose size="25" />
+              </S.ModalButtonX>
+            </S.ModalFlex>
+            <S.ModalTitleWrap>
+              <S.ModalTitle>제목: {postDetails.title}</S.ModalTitle>
+              <S.PlacedButton>
+                {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
+                {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
+              </S.PlacedButton>
+            </S.ModalTitleWrap>
+            <hr />
+            {/* <S.TagName>{postDetails.tags}</S.TagName> */}
+            <S.ImgContent
+              dangerouslySetInnerHTML={{
+                // __html: DOMPurify.sanitize(postDetails.content + `<S.TagName>${postDetails.tags}</S.TagName>`)
+                __html: DOMPurify.sanitize(`<S.TagName>${postDetails.tags}</S.TagName>` + postDetails.content)
+              }}
+            />
+          </S.ModalContent>
+        </S.ModalWrap>
+      )}
     </>
   );
 };

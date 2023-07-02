@@ -89,11 +89,12 @@ const Header = () => {
 export default Header;
 
 const StHeader = styled.header`
-  margin: 10px;
-  padding: 10px;
+  margin: 0 auto;
+  padding: 20px 0;
   display: flex;
   justify-content: space-between;
-
+  max-width: 1200px;
+  width: 100%;
   & a > img {
     width: 230px;
   }

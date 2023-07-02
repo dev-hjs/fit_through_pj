@@ -19,25 +19,21 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let initialState = [];
+      let initialPosts = [];
 
       const querySnapshot = await getDocs(collection(db, 'posts'));
-      initialState = querySnapshot.docs.map((doc) => ({
+      initialPosts = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
-        pid: doc.id
+        id: doc.id
       }));
 
-      dispatch({ type: '초기세팅', payload: initialState });
+      dispatch({ type: '초기세팅', payload: initialPosts });
     };
 
     fetchData();
   }, []);
 
   useEffect(() => {
-    const filteredData = postsData.filter((post) => {
-      post.tags.includes('하체');
-    });
-    console.log(filteredData);
     setData(postsData);
   }, [postsData]);
 
@@ -200,6 +196,7 @@ const Home = () => {
                       __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
                     }}
                   ></div>
+
                   <h3>
                     &nbsp;&nbsp;<span>{post.tags}</span> {post.title}
                   </h3>
@@ -217,10 +214,10 @@ const Home = () => {
 export default Home;
 
 const Main = styled.main`
-  margin: 10px;
-  padding: 10px;
+  margin: 0 auto;
+  padding: 20px 0;
+  max-width: 1200px;
   width: 100%;
-  height: 100vh;
 `;
 // const StHeader = styled.header`
 //   /* border: 1px solid black; */
@@ -264,6 +261,7 @@ const StPostContainer = styled.div`
   border-radius: 4px;
   /* box-sizing: content-box; */
   margin: 40px auto;
+
 
   &:hover::after {
     content: '상세보기'; /* Text to display */
@@ -332,11 +330,6 @@ const StPostList = styled.div`
   }
 `;
 
-// const StSearchBtn = styled.button`
-//   background-color: white;
-//   border: 0px;
-// `;
-
-// const StForm = styled.form`
-//   position: relative;
-// `;
+const StPostTitle = styled.h3`
+  margin-top: 5px;
+`;
