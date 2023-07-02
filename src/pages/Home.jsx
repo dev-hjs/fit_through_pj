@@ -192,6 +192,7 @@ const StCategoryList = styled.div`
   border-top: 2px solid #ababab;
   border-bottom: 2px solid #ababab;
 `;
+
 const StCategoryBtn = styled.button`
   background-color: ${(props) => (props.isActive ? '#35c5f0' : '#fff')};
   color: #343434;
@@ -205,12 +206,10 @@ const StCategoryBtn = styled.button`
   margin-right: 10px;
   margin-top: 20px;
   margin-bottom: 10px;
-
   cursor: pointer;
   &:not(:first-child) {
     background-color: ${(props) => (props.isActive ? '#35c5f0' : '#fff')};
   }
-
   &.active {
     background-color: #35c5f0;
   }
@@ -240,7 +239,6 @@ const S = {
   container: styled.div`
     margin: 15px auto 0;
     border-top: 2px solid #ababab;
-
     width: 100%;
     padding: 0;
   `,
@@ -260,6 +258,7 @@ const S = {
       object-fit: cover;
       padding-top: 15px;
       opacity: 0.85;
+      cursor: pointer;
     }
     &:hover {
       border: none;

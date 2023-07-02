@@ -17,7 +17,6 @@ const MyPage = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [postData, setPostData] = useState('');
   const openDetailModal = (post) => {
-    console.log(post);
     setPostData(post);
     setIsDetailModalOpen(true);
   };
@@ -29,16 +28,13 @@ const MyPage = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('auth오류 아님');
         const fetchData = async () => {
-          console.log('fetch함수실행');
           const q = query(collection(db, 'posts'), where('authorId', '==', auth.currentUser.uid));
           const querySnapshot = await getDocs(q);
           const initialPosts = [];
           querySnapshot.forEach((doc) => {
             initialPosts.push({ id: doc.id, ...doc.data() });
           });
-          console.log(initialPosts);
           dispatch({ type: '초기세팅', payload: initialPosts });
           setUserPosts(initialPosts);
         };
@@ -124,7 +120,6 @@ const P = {
     font-weight: bold;
     color: #35c5f0;
     text-decoration: none;
-
     &:hover {
       text-decoration: underline;
     }

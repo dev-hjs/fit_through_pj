@@ -50,7 +50,6 @@ const StPostContainer = styled.div`
   background-color: #fff;
   border-radius: 4px;
   margin: 0px auto;
-
   &:hover::after {
     content: '상세보기'; /* Text to display */
     position: absolute;
@@ -65,7 +64,6 @@ const StPostContainer = styled.div`
     line-height: 36px;
     cursor: pointer;
   }
-
   & div {
     border-radius: 5px;
     width: 100%;
@@ -90,6 +88,7 @@ const StPostContainer = styled.div`
     margin-right: 5px;
   }
 `;
+
 const ImgList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
