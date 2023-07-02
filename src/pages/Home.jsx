@@ -200,7 +200,7 @@ const Home = () => {
                       __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
                     }}
                   ></div>
-                  <h3>{post.title}</h3>
+                  <StPostTitle>{post.title}</StPostTitle>
                 </StPostContainer>
               </>
             );
@@ -215,10 +215,11 @@ const Home = () => {
 export default Home;
 
 const Main = styled.main`
-  margin: 10px;
-  padding: 10px;
+  margin: 0 auto;
+  padding: 20px 0;
+  max-width: 1200px;
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
 `;
 // const StHeader = styled.header`
 //   /* border: 1px solid black; */
@@ -261,7 +262,6 @@ const StPostContainer = styled.div`
   background-color: #fff;
   border-radius: 5px;
   /* box-sizing: content-box; */
-  margin: 5px;
 
   &:hover::after {
     content: '상세보기'; /* Text to display */
@@ -307,7 +307,7 @@ const StPostContainer = styled.div`
 const StPostList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 30px 35px;
+  grid-gap: 40px 35px;
   width: 100%;
   align-items: center;
   & div {
@@ -317,11 +317,6 @@ const StPostList = styled.div`
   }
 `;
 
-// const StSearchBtn = styled.button`
-//   background-color: white;
-//   border: 0px;
-// `;
-
-// const StForm = styled.form`
-//   position: relative;
-// `;
+const StPostTitle = styled.h3`
+  margin-top: 5px;
+`;

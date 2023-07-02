@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Header from '../components/Header/Header';
 import Profile from '../components/MyPage/Profile';
 import PostDetail from './PostDetail';
+import Footer from '../components/Footer/Footer';
 
 const MyPage = () => {
   const [userPosts, setUserPosts] = useState([]);
@@ -113,6 +114,7 @@ const MyPage = () => {
         </P.FlexWrap>
       </P.MypageBodyWrap>
       {isDetailModalOpen && <PostDetail postData={postData} closeModal={closeDetailModal} />}
+      <Footer />
     </>
   );
 };
