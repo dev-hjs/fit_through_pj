@@ -16,19 +16,17 @@ const Thumbnail = ({ postsArr, openDetailModal, area }) => {
         //그려지는 부분
         if (area === 'Home') {
           return (
-            <>
-              <StPostContainer key={post.id} onClick={() => openDetailModal(post)}>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
-                  }}
-                ></div>
+            <StPostContainer key={post.id} onClick={() => openDetailModal(post)}>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: `<img width="100%" height="100%" src=${thumbnailURL}>`
+                }}
+              ></div>
 
-                <h3>
-                  &nbsp;&nbsp;<span>{post.tags}</span> {post.title}
-                </h3>
-              </StPostContainer>
-            </>
+              <h3>
+                &nbsp;&nbsp;<span>{post.tags}</span> {post.title}
+              </h3>
+            </StPostContainer>
           );
         } else if (area === 'MyPage') {
           return (

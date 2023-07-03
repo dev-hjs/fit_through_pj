@@ -10,7 +10,6 @@ import { MdClose } from 'react-icons/md';
 const PostRegist = ({ closeModal }) => {
   const [currentUser, setCurrentUser] = useState('');
   const [title, setTitle] = useState('');
-  const [tags, setTags] = useState('');
   const [content, setConent] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
 
@@ -58,7 +57,6 @@ const PostRegist = ({ closeModal }) => {
 
     //제목, 태그, 내용  초기화
     setTitle('');
-    setTags('');
     setConent('');
   };
 
