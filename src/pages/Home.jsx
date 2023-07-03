@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header/Header';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import PostDetail from './PostDetail';
@@ -13,6 +13,9 @@ const Home = () => {
   const postsData = useSelector((state) => state.posts);
   const [data, setData] = useState(postsData);
   const [selectedTag, setSelectedTag] = useState('');
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [postData, setPostData] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,10 +37,6 @@ const Home = () => {
     setData(postsData);
   }, [postsData]);
 
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-
-  const [postData, setPostData] = useState('');
-
   const openDetailModal = (post) => {
     setPostData(post);
     setIsDetailModalOpen(true);
@@ -46,28 +45,6 @@ const Home = () => {
   const closeDetailModal = () => {
     setIsDetailModalOpen(false);
   };
-
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const tagQueries = selectedTags.map((tag) => query(collection(db, 'posts'), where('tag', '==', tag)));
-
-      if (tagQueries.length === 0) {
-        // 선택된 태그가 없는 경우 빈 배열을 초기 값으로 설정합니다.
-        setFilteredPosts([]);
-        return;
-      }
-
-      const compoundQuery = tagQueries.reduce((q1, q2) => q1 || q2);
-      const querySnapshot = await getDocs(compoundQuery);
-      const postsData = querySnapshot.docs.map((doc) => ({ ...doc.data(), pid: doc.id }));
-      setFilteredPosts(postsData);
-    };
-
-    fetchData();
-  }, [selectedTags]);
 
   const toggleTag = (tag) => {
     if (selectedTags.includes(tag)) {

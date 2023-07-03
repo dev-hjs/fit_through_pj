@@ -9,15 +9,12 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { MdClose } from 'react-icons/md';
 
 const PostDetail = ({ postData, closeModal }) => {
-  const isModalOpen = true;
   const posts = useSelector((state) => state.posts);
-  const postDetails = posts.filter((post) => {
-    if (post.authorId === postData.authorId && post.content === postData.content) {
-      return post;
-    }
-  })[0];
-
   const [isSame, setIsSame] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const postDetails = posts.filter(
+    (post) => post.authorId === postData.authorId && post.content === postData.content
+  )[0];
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -25,12 +22,10 @@ const PostDetail = ({ postData, closeModal }) => {
         if (user.uid === postDetails.authorId) {
           setIsSame(true);
         }
-      } else {
       }
     });
   }, []);
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const openEditModal = () => {
     setIsEditModalOpen(true);
   };
@@ -49,46 +44,39 @@ const PostDetail = ({ postData, closeModal }) => {
 
   useEffect(() => {
     const bodyElement = document.body;
-    if (isModalOpen) {
-      bodyElement.classList.add('modal-open');
-      bodyElement.style.overflow = 'hidden';
-    } else {
-      bodyElement.classList.remove('modal-open');
-      bodyElement.style.overflow = 'auto';
-    }
+    bodyElement.classList.add('modal-open');
+    bodyElement.style.overflow = 'hidden';
 
     return () => {
       bodyElement.style.overflow = 'auto';
     };
-  }, [isModalOpen]);
+  }, []);
 
   return (
     <>
-      {isModalOpen && (
-        <S.ModalWrap>
-          <S.ModalContent>
-            <S.ModalFlex>
-              {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
-              <S.ModalButtonX onClick={closeModal}>
-                <MdClose size="25" />
-              </S.ModalButtonX>
-            </S.ModalFlex>
-            <S.ModalTitleWrap>
-              <S.ModalTitle>제목: {postDetails.title}</S.ModalTitle>
-              <S.PlacedButton>
-                {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
-                {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
-              </S.PlacedButton>
-            </S.ModalTitleWrap>
-            <hr />
-            <S.ImgContent
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(`<S.TagName>${postDetails.tags}</S.TagName>` + postDetails.content)
-              }}
-            />
-          </S.ModalContent>
-        </S.ModalWrap>
-      )}
+      <S.ModalWrap>
+        <S.ModalContent>
+          <S.ModalFlex>
+            {isEditModalOpen && <PostEdit postData={postData} closeModal={closeEditModal} />}
+            <S.ModalButtonX onClick={closeModal}>
+              <MdClose size="25" />
+            </S.ModalButtonX>
+          </S.ModalFlex>
+          <S.ModalTitleWrap>
+            <S.ModalTitle>제목: {postDetails.title}</S.ModalTitle>
+            <S.PlacedButton>
+              {isSame && <S.ModalButton onClick={openEditModal}>수정</S.ModalButton>}
+              {isSame && <S.ModalButton onClick={deletePost}>삭제</S.ModalButton>}
+            </S.PlacedButton>
+          </S.ModalTitleWrap>
+          <hr />
+          <S.ImgContent
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(`<S.TagName>${postDetails.tags}</S.TagName>` + postDetails.content)
+            }}
+          />
+        </S.ModalContent>
+      </S.ModalWrap>
     </>
   );
 };

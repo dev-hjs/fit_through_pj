@@ -39,10 +39,11 @@ const Profile = () => {
   const handleInput = () => {
     imgInputRef.current.click();
   };
+
   const handleImage = async (e) => {
     const file = e.target.files[0];
     try {
-      const filePath = `contents/temp/${Date.now()}`;
+      const filePath = `contents/temp/${Date.now()}`; //Date.now() 현재시각이 나와요. 2023년 7월 3일 몇시 몇분 몇초.
       const fileRef = ref(storage, `imgs/${filePath}`);
       const snapshot = await uploadBytes(fileRef, file);
       const url = await getDownloadURL(snapshot.ref);
@@ -52,6 +53,7 @@ const Profile = () => {
       setUser({ ...user, photoURL: url });
     } catch (e) {}
   };
+
   const handleName = async (name) => {
     if (name !== '닉네임') {
       await updateProfile(auth.currentUser, {
