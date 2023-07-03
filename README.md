@@ -6,7 +6,7 @@ React와 Firebase API를 이용한 건강 정보 공유 플랫폼 사이트입�
 
 ## 사이트 주소
 
-http://fit-throught.com
+http://fit-through.com
 
 ## 🕰️ 개발 기간
 
