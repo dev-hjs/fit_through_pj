@@ -6,9 +6,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import Editor from '../components/editor/Editor';
 
 const PostEdit = ({ postData, closeModal }) => {
-  const isModalOpen = true;
   const [title, setTitle] = useState(postData.title);
-  const [tags, setTags] = useState(postData.tags);
   const [content, setConent] = useState(postData.content);
   const [selectedTag, setSelectedTag] = useState(postData.tags[0]);
 
@@ -24,7 +22,6 @@ const PostEdit = ({ postData, closeModal }) => {
     setTitle(e.target.value);
   };
   const handleAddTag = (e) => {
-    setTags(e.target.value);
     setSelectedTag(e.target.value);
   };
   const handleAddContent = (contents) => {
@@ -46,75 +43,65 @@ const PostEdit = ({ postData, closeModal }) => {
     closeModal();
 
     window.location.reload(`/mypage/${post.authorId}`);
-
-    setTitle('');
-    setTags('');
-    setConent('');
   };
 
   useEffect(() => {
     const bodyElement = document.body;
-    if (isModalOpen) {
-      bodyElement.classList.add('modal-open');
-      bodyElement.style.overflow = 'hidden';
-    } else {
-      bodyElement.classList.remove('modal-open');
-      bodyElement.style.overflow = 'auto';
-    }
+
+    bodyElement.classList.add('modal-open');
+    bodyElement.style.overflow = 'hidden';
 
     return () => {
       bodyElement.style.overflow = 'auto';
     };
-  }, [isModalOpen]);
+  }, []);
 
   return (
     <>
-      {isModalOpen && (
-        <S.ModalContainer>
-          <S.ModalContent>
-            <S.InputGroup>
-              <S.ModalInput
-                placeholder="제목을 입력해주세요"
-                ref={titleRef}
-                type="text"
-                value={title}
-                onChange={handleAddTitle}
-              />
-            </S.InputGroup>
-            <S.InputGroup>
-              <S.TagsDropdown value={tags} onChange={handleAddTag}>
-                <option value="">태그 선택</option>
-                {postTags.map((tag) => (
-                  <option
-                    key={tag}
-                    value={tag}
-                    style={{
-                      backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
-                      color: selectedTag === tag ? '#fff' : '#000'
-                    }}
-                  >
-                    {tag}
-                  </option>
-                ))}
-              </S.TagsDropdown>
-            </S.InputGroup>
-            <S.InputGroup>
-              <S.ReactQuill>
-                <Editor
+      <S.ModalContainer>
+        <S.ModalContent>
+          <S.InputGroup>
+            <S.ModalInput
+              placeholder="제목을 입력해주세요"
+              ref={titleRef}
+              type="text"
+              value={title}
+              onChange={handleAddTitle}
+            />
+          </S.InputGroup>
+          <S.InputGroup>
+            <S.TagsDropdown value={selectedTag} onChange={handleAddTag}>
+              <option value="">태그 선택</option>
+              {postTags.map((tag) => (
+                <option
+                  key={tag}
+                  value={tag}
                   style={{
-                    width: '100%',
-                    border: '1px solid gray',
-                    borderRadius: '5px'
+                    backgroundColor: selectedTag === tag ? '#35c5f0' : 'transparent',
+                    color: selectedTag === tag ? '#fff' : '#000'
                   }}
-                  value={content}
-                  onChange={handleAddContent}
-                />
-              </S.ReactQuill>
-            </S.InputGroup>
-            <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
-          </S.ModalContent>
-        </S.ModalContainer>
-      )}
+                >
+                  {tag}
+                </option>
+              ))}
+            </S.TagsDropdown>
+          </S.InputGroup>
+          <S.InputGroup>
+            <S.ReactQuill>
+              <Editor
+                style={{
+                  width: '100%',
+                  border: '1px solid gray',
+                  borderRadius: '5px'
+                }}
+                value={content}
+                onChange={handleAddContent}
+              />
+            </S.ReactQuill>
+          </S.InputGroup>
+          <S.ModalButton onClick={handleSave}>저장</S.ModalButton>
+        </S.ModalContent>
+      </S.ModalContainer>
     </>
   );
 };

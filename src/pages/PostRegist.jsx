@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
 import { styled } from 'styled-components';
 import 'react-quill/dist/quill.snow.css';
 import { addDoc, collection } from 'firebase/firestore';
@@ -17,11 +16,7 @@ const PostRegist = ({ closeModal }) => {
 
   // 마운트 되었을 때 한번만 인증상태 확인. user의 uid를 설정
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user.uid);
-      }
-    });
+    setCurrentUser(auth.currentUser.uid);
   }, []);
 
   // 태그 핸들러
@@ -46,18 +41,12 @@ const PostRegist = ({ closeModal }) => {
     // Firestore에서 'posts' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, 'posts');
     await addDoc(collectionRef, post);
-
-    //모달닫기, 선택된 태그 초기화, 태그핸들러 초기화
+    alert('작성완료');
+    //모달닫기
     closeModal();
-    setSelectedTag('');
-    handleTagChange({ target: { value: '' } });
 
     //페이지 리로드, 홈화면으로 이동
     window.location.replace('/');
-
-    //제목, 태그, 내용  초기화
-    setTitle('');
-    setConent('');
   };
 
   return (

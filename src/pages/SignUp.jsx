@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -11,10 +11,6 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {});
-  }, []);
 
   const onChange = (event) => {
     const {
