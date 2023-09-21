@@ -1,4 +1,4 @@
-# team_MovieProject
+# FIT THROUGH(휘뚜루 마뚜루)
 
 ## 🖥️ 프로젝트 소개
 
